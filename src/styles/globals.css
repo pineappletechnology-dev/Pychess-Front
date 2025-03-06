@@ -1,0 +1,33 @@
+/* Reset básico de CSS */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+  background-color: #fff;
+  color: #333;
+}
+
+/* Desabilita o comportamento de links sublinhados em navegadores */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Remove os estilos padrão de botões */
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* Remove o estilo de foco de elementos ao usar o teclado */
+:focus {
+  outline: none;
+}

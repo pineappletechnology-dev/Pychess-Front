@@ -1,0 +1,12 @@
+.genericButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:50%;
+    margin: auto;
+
+    background-color: #5288FF;
+    border-radius: 5px;
+    color: white;
+    padding: 10px;
+}
