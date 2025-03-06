@@ -1,0 +1,21 @@
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.splashFooterContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

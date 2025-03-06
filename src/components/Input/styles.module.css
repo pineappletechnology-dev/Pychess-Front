@@ -1,0 +1,11 @@
+.input {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.inputText {
+    border-radius: 5px;
+    border: solid 2px #767676;
+    padding: 15px;
+}

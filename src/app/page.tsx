@@ -6,7 +6,7 @@ import GenericButton from '@/components/GenericButton/GenericButton';
 import Footer from '@/components/Footer/Footer';
 
 
-export default function Home() {
+export default function Register() {
 
     return (
         <div>

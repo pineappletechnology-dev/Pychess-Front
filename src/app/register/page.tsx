@@ -13,22 +13,19 @@ export default function Login() {
             <div className={styles.splashFooterContainer}>
                 <Image src="/icons/castle.svg" alt="Profile" width={50} height={50} />
                 <p>PyChess</p>
-                <p>Entre com sua conta para jogar</p>
+                <p>Adicione seus dados para cadastro</p>
             </div>
 
             <div className={styles.loginContainer}>
             <Input inputLabel="Nome de usuário" inputName="username" inputText="Digite seu nome de usuário"></Input>
+            <Input inputLabel="Email" inputName="email" inputText="Digite seu email"></Input>
             <PasswordInput inputLabel="Senha" inputName="password" inputText="Digite sua senha"></PasswordInput>
+            <PasswordInput inputLabel="Confirmar senha" inputName="" inputText="confirme sua senha"></PasswordInput>
             <GenericButton text='Entrar'></GenericButton>
-            <div className={styles.rememberContainer}>
-                <input type="checkbox" name="remember" id="remember" />
-                <label htmlFor="remember">Lembrar de mim</label>
-            </div>
-            <a href="#">Esqueceu sua senha?</a>
-            <p>Não tem uma conta? <a href="/register">Cadastre-se</a></p>
+            <p>Já tem uma conta? <a href="/login">Entre agora</a></p>
             </div>
 
-            <Footer iconName='person.svg' text='Login'></Footer>
+            <Footer iconName='person.svg' text='Registro'></Footer>
         </div>
     )
 }

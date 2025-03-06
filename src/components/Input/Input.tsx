@@ -8,9 +8,9 @@ interface inputOptions {
 
 export default function Input({inputName, inputText, inputLabel}: inputOptions) {
     return(
-        <div>
-            <label htmlFor="">{inputLabel}</label>
-            <input type="text" name={inputName} placeholder={inputText} />
+        <div className={styles.input}>
+            <label htmlFor="" className={styles.inputLabel}>{inputLabel}</label>
+            <input type="text" className={styles.inputText} name={inputName} placeholder={inputText} />
         </div>
     )
 }
