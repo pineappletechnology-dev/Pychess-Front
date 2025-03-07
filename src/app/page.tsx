@@ -9,10 +9,10 @@ import Footer from '@/components/Footer/Footer';
 export default function Register() {
 
     return (
-        <div>
+        <div className={styles.main}>
             <Header></Header>
-            <div className={styles.main}>
-                <div>
+            <div className={styles.mainPageContainer}>
+                <div className={styles.welcomeContainer}>
                 <div className={styles.welcomeImage}></div>
                 <div className={styles.welcomeLabel}>Bem vindo(a) ao PyChess</div>
                 </div>
@@ -41,8 +41,8 @@ export default function Register() {
 
                 <GenericButton text="Jogue agora"></GenericButton>
 
-                <Footer iconName='icon-home.svg' text='Login'></Footer>
             </div>
+                <Footer iconName='icon-home.svg' text='Login'></Footer>
         </div>
 
     )
