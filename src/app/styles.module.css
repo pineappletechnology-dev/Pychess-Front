@@ -27,6 +27,7 @@
 }
 
 .welcomeLabel {
+    font-weight: 500;
     background-color: #5288FF;
     color: white;
     text-align: center;
@@ -47,6 +48,10 @@
     gap: 5px;
 }
 
+.landInfoTitle {
+    font-weight: 800;
+}
+
 .didYouKnowLayout {
     display: flex;
     flex-direction: column;
@@ -60,6 +65,7 @@
 }
 
 .didYouKnowTitle {
+    font-weight: 800;
     color: #5288FF;
 }
 

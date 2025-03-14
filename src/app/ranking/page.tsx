@@ -1,5 +1,5 @@
-import Header from '@/components/Header/Header'
 import '../../styles/globals.css'
+import Header from '@/components/Header/Header'
 import styles from './styles.module.css'
 import Footer from '@/components/Footer/Footer'
 import RankItem from '@/components/RankItem/RankItem'

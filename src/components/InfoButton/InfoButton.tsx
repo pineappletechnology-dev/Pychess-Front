@@ -13,7 +13,7 @@ export default function InfoButton({iconName, title, text, onClick}: InfoButtonP
         <div className={styles.ibContainer} onClick={onClick}>
             <Image src={`/icons/${iconName}`} alt="" width={25} height={25} />
             <div className={styles.ibTexts}>
-                <p>{title}</p>
+                <p className={styles.ibTitle}>{title}</p>
                 <p>{text}</p>
             </div>
         </div>

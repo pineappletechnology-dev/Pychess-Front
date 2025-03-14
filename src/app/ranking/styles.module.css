@@ -42,6 +42,10 @@
     justify-content: center;
 }
 
+.bestTitle {
+    font-weight: 800;
+}
+
 .bestDesc {
     display: flex;
     flex-direction: column;

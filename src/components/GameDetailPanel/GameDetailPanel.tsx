@@ -12,7 +12,7 @@ export default function GameDetailPanel({labels, values, maxWidth, minWidth}: de
         <div className={styles.container} style={{maxWidth, minWidth}}>
             {labels.map((label, index) => (
                 <div className={styles.content} key={index}>
-                    <p>
+                    <p className={styles.label}>
                     {label}
                     </p>
                     <p>

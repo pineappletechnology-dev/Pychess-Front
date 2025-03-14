@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    font-weight: 800;
 }
 
 .loginContainer {
@@ -23,4 +24,11 @@
 .rememberContainer {
     display: flex;
     gap: 10px;
+}
+
+.linkHighlight {
+    color: #5288ff;
+}
+
+.loginOptions {
 }

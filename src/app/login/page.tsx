@@ -25,7 +25,7 @@ export default function Login() {
                 <label htmlFor="remember">Lembrar de mim</label>
             </div>
             <a href="#">Esqueceu sua senha?</a>
-            <p>Não tem uma conta? <a href="/register">Cadastre-se</a></p>
+            <p className={styles.loginOptions}>Não tem uma conta? <a className={styles.linkHighlight} href="/register">Cadastre-se</a></p>
             </div>
 
             <Footer iconName='person.svg' text='Login'></Footer>
