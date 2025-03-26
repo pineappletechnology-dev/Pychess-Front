@@ -40,7 +40,6 @@ export default function Register() {
                 </div>
 
                 <GenericButton text="Jogue agora"></GenericButton>
-
             </div>
                 <Footer iconName='icon-home.svg' text='Login'></Footer>
         </div>
