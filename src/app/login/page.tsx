@@ -6,6 +6,7 @@ import styles from './styles.module.css'
 import Footer from '@/components/Footer/Footer';
 import Image from 'next/image';
 
+
 export default function Login() {
     return (
         <div className={styles.pageContainer}>
@@ -17,15 +18,15 @@ export default function Login() {
             </div>
 
             <div className={styles.loginContainer}>
-            <Input inputLabel="Nome de usuário" inputName="username" inputText="Digite seu nome de usuário"></Input>
-            <PasswordInput inputLabel="Senha" inputName="password" inputText="Digite sua senha"></PasswordInput>
-            <GenericButton text='Entrar'></GenericButton>
-            <div className={styles.rememberContainer}>
-                <input type="checkbox" name="remember" id="remember" />
-                <label htmlFor="remember">Lembrar de mim</label>
-            </div>
-            <a href="#">Esqueceu sua senha?</a>
-            <p className={styles.loginOptions}>Não tem uma conta? <a className={styles.linkHighlight} href="/register">Cadastre-se</a></p>
+                <Input inputLabel="Nome de usuário" inputName="username" inputText="Digite seu nome de usuário"></Input>
+                <PasswordInput inputLabel="Senha" inputName="password" inputText="Digite sua senha"></PasswordInput>
+                <GenericButton text='Entrar'></GenericButton>
+                <div className={styles.rememberContainer}>
+                    <input type="checkbox" name="remember" id="remember" />
+                    <label htmlFor="remember">Lembrar de mim</label>
+                </div>
+                <a href="#">Esqueceu sua senha?</a>
+                <p className={styles.loginOptions}>Não tem uma conta? <a className={styles.linkHighlight} href="/register">Cadastre-se</a></p>
             </div>
 
             <Footer iconName='person.svg' text='Login'></Footer>
