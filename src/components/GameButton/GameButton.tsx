@@ -1,9 +1,21 @@
-import styles from './styles.module.css'
+import styles from './styles.module.css';
 
-export default function GameButton() {
+interface GameButtonProps {
+    hasOngoingGame?: boolean;
+}
+
+export default function GameButton({ hasOngoingGame = false }: GameButtonProps) {
     return (
-        <div className={styles.GameButtonContainer}>
-            <p className={styles.GameButtonText}>Iniciar nova partida</p>
+        <div
+            className={
+                hasOngoingGame
+                    ? `${styles.GameButtonContainer} ${styles.continueGame}`
+                    : `${styles.GameButtonContainer} ${styles.newGame}`
+            }
+        >
+            <p className={styles.GameButtonText}>
+                {hasOngoingGame ? 'Patida em andamento' : 'Iniciar nova partida'}
+            </p>
         </div>
-    )
+    );
 }

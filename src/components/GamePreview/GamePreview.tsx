@@ -1,9 +1,17 @@
 import styles from './styles.module.css'
 
-export default function GamePreview() {
+interface GamePreviewProps {
+    hasOngoingGame?: boolean;
+}
+
+export default function GamePreview({ hasOngoingGame = false }: GamePreviewProps) {
     return (
         <div className={styles.container}>
-            <p>Nenhum jogo em andamento</p>
+            <p>
+                {hasOngoingGame
+                    ? 'Partida em andamento, continue jogando!'
+                    : 'Nenhum jogo em andamento'}
+            </p>
         </div>
-    )
+    );
 }

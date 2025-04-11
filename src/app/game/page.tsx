@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import '../../styles/globals.css'
@@ -14,6 +14,7 @@ import GamePreview from '@/components/GamePreview/GamePreview';
 
 export default function Game() {
     const router = useRouter();
+    const [hasOngoingGame, setHasOngoingGame] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -32,6 +33,16 @@ export default function Game() {
             }
         });
 
+        // Verifica se existe um jogo em andamento e retorna o tabuleiro se sim
+        fetch('http://localhost:8000/game_board/')
+            .then(res => {
+                if (res.ok) {
+                    setHasOngoingGame(true);
+                }
+            }).catch(err => {
+                console.error("Erro ao verificar jogo em andamento:", err);
+            });
+
     });
 
 
@@ -39,7 +50,7 @@ export default function Game() {
         <div className={styles.container}>
             <Header></Header>
             <div className={styles.content}>
-                <GameButton></GameButton>
+                <GameButton hasOngoingGame={hasOngoingGame} />
                 <p>Última partida</p>
                 <GameInfoCard username="Kasparov" result="Vitória" time="15 minutos atrás"></GameInfoCard>
                 <p>Menu rápido</p>
@@ -49,7 +60,7 @@ export default function Game() {
                     <InfoButton iconName="crown.svg" title="Ranking" text="Ver o ranking dos jogadores"></InfoButton>
                 </div>
                 <p>Últimos movimentos</p>
-                <GamePreview></GamePreview>
+                <GamePreview hasOngoingGame={hasOngoingGame} />
             </div>
             <Footer iconName="icon-game.svg" text="Jogo"></Footer>
         </div>
