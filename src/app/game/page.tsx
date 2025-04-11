@@ -1,3 +1,8 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
 import '../../styles/globals.css'
 import styles from './styles.module.css'
 import Footer from "@/components/Footer/Footer";
@@ -8,6 +13,28 @@ import InfoButton from "@/components/InfoButton/InfoButton";
 import GamePreview from '@/components/GamePreview/GamePreview';
 
 export default function Game() {
+    const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            router.push('/');
+        }
+
+        fetch('http://localhost:8000/verify-token/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then(res => {
+            if (!res.ok) {
+                router.push('/');
+            }
+        });
+
+    });
+
+
     return (
         <div className={styles.container}>
             <Header></Header>

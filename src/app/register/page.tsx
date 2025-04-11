@@ -1,4 +1,5 @@
 "use client"
+
 import PasswordInput from '@/components/PasswordInput/PasswordInput';
 import '../../styles/globals.css'
 import Input from "@/components/Input/Input";
