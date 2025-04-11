@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import PasswordInput from '@/components/PasswordInput/PasswordInput';
 import '../../styles/globals.css'
@@ -12,10 +12,23 @@ import Footer from '@/components/Footer/Footer';
 import Image from 'next/image';
 
 export default function Login() {
+    const router = useRouter();
+    const searcParams = useSearchParams();
+    const successMessage = searcParams.get("success");
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const router = useRouter();
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    useEffect(() => {
+        if (successMessage) {
+            setShowSuccess(true);
+            const timer = setTimeout(() => setShowSuccess(false), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [successMessage]);
 
     const handleInputChange = (setter: (val: string) => void) =>
         (e: React.ChangeEvent<HTMLInputElement>) => setter(e.target.value);
@@ -24,7 +37,7 @@ export default function Login() {
         e.preventDefault();
 
         try {
-            const res = await fetch('http://localhost:8000/login/', {
+            const res = await fetch(`${API_URL}/login/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -52,6 +65,12 @@ export default function Login() {
 
     return (
         <div className={styles.pageContainer}>
+
+            {showSuccess && (
+                <div className={styles.successAlert}>
+                    {successMessage}
+                </div>
+            )}
 
             <div className={styles.splashFooterContainer}>
                 <Image src="/icons/castle.svg" alt="Profile" width={50} height={50} />
