@@ -6,7 +6,9 @@ import styles from './styles.module.css'
 import Footer from '@/components/Footer/Footer'
 import RankItem from '@/components/RankItem/RankItem'
 import Image from 'next/image'
+
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface User {
     username: string;
@@ -14,10 +16,16 @@ interface User {
 }
 
 export default function Ranking() {
+    const router = useRouter();
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState<User[]>([]);
 
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        router.push('/');
+    }
 
     useEffect(() => {
         fetch(`${API_URL}/get-users/`)
