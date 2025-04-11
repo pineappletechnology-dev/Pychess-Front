@@ -15,6 +15,7 @@ import GamePreview from '@/components/GamePreview/GamePreview';
 export default function Game() {
     const router = useRouter();
     const [hasOngoingGame, setHasOngoingGame] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -41,10 +42,19 @@ export default function Game() {
                 }
             }).catch(err => {
                 console.error("Erro ao verificar jogo em andamento:", err);
+            }).finally(() => {
+                setLoading(false);
             });
 
     });
 
+    if (loading) {
+        return (
+            <div className={styles.spinnerContainer}>
+                <div className={styles.spinner}></div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.container}>
