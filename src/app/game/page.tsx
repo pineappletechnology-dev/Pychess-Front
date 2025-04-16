@@ -35,8 +35,9 @@ export default function Game() {
             }
 
             try {
-                const verifyRes = await fetch(`${API_URL}/verify-token/`, {
+                const verifyRes = await fetch(`${API_URL}/verify-token/?token=${token}`, {
                     headers: { Authorization: `Bearer ${token}` },
+                    cache: 'no-store'
                 });
 
                 if (!verifyRes.ok) {
@@ -72,6 +73,7 @@ export default function Game() {
             </div>
         );
     }
+
 
     return (
         <div className={styles.container}>
