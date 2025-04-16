@@ -6,7 +6,7 @@ interface GicProps {
     time: string;
 }
 
-export default function GameInfoCard({username, result, time}: GicProps) {
+export default function GameInfoCard({ username, result, time }: GicProps) {
     return (
         <button className={styles.buttonContainer}>
             <div className={styles.informationContainer}>

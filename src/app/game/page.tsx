@@ -12,41 +12,58 @@ import GameButton from "@/components/GameButton/GameButton";
 import InfoButton from "@/components/InfoButton/InfoButton";
 import GamePreview from '@/components/GamePreview/GamePreview';
 
+type LastGame = {
+    username: string;
+    result: string;
+};
+
 export default function Game() {
+
     const router = useRouter();
     const [hasOngoingGame, setHasOngoingGame] = useState(false);
     const [loading, setLoading] = useState(true);
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const [lastGame, setLastGame] = useState<LastGame | null>(null);
+
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-            router.push('/');
-        }
-
-        fetch('http://localhost:8000/verify-token/', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        }).then(res => {
-            if (!res.ok) {
+        const fetchData = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
                 router.push('/');
+                return;
             }
-        });
 
-        // Verifica se existe um jogo em andamento e retorna o tabuleiro se sim
-        fetch('http://localhost:8000/game_board/')
-            .then(res => {
-                if (res.ok) {
+            try {
+                const verifyRes = await fetch(`${API_URL}/verify-token/`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (!verifyRes.ok) {
+                    router.push('/');
+                    return;
+                }
+
+                const gameBoardRes = await fetch(`${API_URL}/game_board/`);
+                if (gameBoardRes.ok) {
                     setHasOngoingGame(true);
                 }
-            }).catch(err => {
-                console.error("Erro ao verificar jogo em andamento:", err);
-            }).finally(() => {
-                setLoading(false);
-            });
 
-    });
+                const lastGameRes = await fetch(`${API_URL}/last_game/`);
+                if (lastGameRes.ok) {
+                    const data = await lastGameRes.json();
+                    setLastGame(data);
+                }
+
+            } catch (err) {
+                console.error("Erro:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     if (loading) {
         return (
@@ -62,7 +79,16 @@ export default function Game() {
             <div className={styles.content}>
                 <GameButton hasOngoingGame={hasOngoingGame} />
                 <p>Última partida</p>
-                <GameInfoCard username="Kasparov" result="Vitória" time="15 minutos atrás"></GameInfoCard>
+                {lastGame ? (
+                    <GameInfoCard
+                        username={lastGame.username}
+                        result={lastGame.result}
+                        time='15 Minutos'
+                    />
+                ) : (
+                    <p>Carregando última partida...</p>
+                )}
+
                 <p>Menu rápido</p>
                 <div className={styles.quickMenu}>
                     <InfoButton iconName="history.svg" title="Histórico Geral" text="Ver partidas anteriores"></InfoButton>
