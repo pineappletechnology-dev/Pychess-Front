@@ -49,8 +49,8 @@ export default function GamePreview({ hasOngoingGame = false }: GamePreviewProps
 
         if (hasOngoingGame) {
             fetchData();
-            const intervalId = setInterval(fetchData, 2000); // polling a cada 2 segundos
-            return () => clearInterval(intervalId);  // Limpar o intervalo quando o componente for desmontado
+            const intervalId = setInterval(fetchData, 2000);
+            return () => clearInterval(intervalId);
         }
     }, [hasOngoingGame, API_URL]);
 
