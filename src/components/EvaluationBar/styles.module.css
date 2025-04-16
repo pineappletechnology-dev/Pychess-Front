@@ -1,0 +1,34 @@
+/* EvaluationBar Styles */
+
+.barContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 50px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    background: #f4f4f4;
+    position: relative;
+}
+
+.white {
+    background-color: #fff;
+    flex-grow: 1;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: black;
+}
+
+.black {
+    background-color: #000;
+    flex-grow: 1;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+}
