@@ -5,6 +5,7 @@ import { Chessboard } from 'react-chessboard';
 import styles from './styles.module.css';
 import GameMoves from '../GameMoves/GamesMoves';
 import EvaluationBar from '../EvaluationBar/EvaluationBar';
+import { io, Socket } from 'socket.io-client';
 
 interface GamePreviewProps {
     hasOngoingGame?: boolean;
@@ -17,42 +18,69 @@ export default function GamePreview({ hasOngoingGame = false }: GamePreviewProps
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const SOCKET_URL = API_URL?.replace(/^http/, 'ws');
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Busca o estado atual do tabuleiro
-                const boardRes = await fetch(`${API_URL}/game_board/`);
-                if (!boardRes.ok) throw new Error("Erro ao carregar o tabuleiro.");
-                const boardData = await boardRes.json();
-                setFen(boardData.fen);
+        const socket: Socket = io(SOCKET_URL || '', {
+            transports: ['websocket'],
+        });
 
-                // Busca os movimentos
-                const movesRes = await fetch(`${API_URL}/game_moves/`);
-                if (!movesRes.ok) throw new Error("Erro ao carregar os movimentos.");
-                const movesData = await movesRes.json();
-                setGameMoves(movesData.moves);
+        socket.on('connect', () => {
+            console.log('Conectado ao WebSocket!');
+        });
 
-                // Busca a probabilidade de vitória
-                const evaluationRes = await fetch(`${API_URL}/evaluate_position/`);
-                if (!evaluationRes.ok) throw new Error("Erro ao carregar avaliação.");
-                const evaluationData = await evaluationRes.json();
-                setWinProbability({ white: evaluationData.win_probability_white, black: evaluationData.win_probability_black });
+        socket.on('connect_error', (err) => {
+            console.error('Erro de conexão WebSocket:', err);
+        });
 
-            } catch (err) {
-                console.error(err);
-                setError("Erro ao carregar os dados.");
-            } finally {
-                setLoading(false);
-            }
-        };
+        // Escuta por eventos específicos enviados do servidor
+        socket.on('some_event', (data) => {
+            console.log('Dados recebidos do servidor:', data);
+        });
 
         if (hasOngoingGame) {
             fetchData();
-            const intervalId = setInterval(fetchData, 2000);
-            return () => clearInterval(intervalId);
+
+            // Escuta o evento socket
+            socket.on('board_updated', () => {
+                console.log("Evento board_updated recebido! Atualizando dados...");
+                fetchData();
+            });
         }
+
+        // Cleanup
+        return () => {
+            socket.disconnect();
+        };
     }, [hasOngoingGame, API_URL]);
+
+    const fetchData = async () => {
+        try {
+            const boardRes = await fetch(`${API_URL}/game_board/`);
+            if (!boardRes.ok) throw new Error("Erro ao carregar o tabuleiro.");
+            const boardData = await boardRes.json();
+            setFen(boardData.fen);
+
+            const movesRes = await fetch(`${API_URL}/game_moves/`);
+            if (!movesRes.ok) throw new Error("Erro ao carregar os movimentos.");
+            const movesData = await movesRes.json();
+            setGameMoves(movesData.moves);
+
+            const evaluationRes = await fetch(`${API_URL}/evaluate_position/`);
+            if (!evaluationRes.ok) throw new Error("Erro ao carregar avaliação.");
+            const evaluationData = await evaluationRes.json();
+            setWinProbability({
+                white: evaluationData.win_probability_white,
+                black: evaluationData.win_probability_black
+            });
+
+        } catch (err) {
+            console.error(err);
+            setError("Erro ao carregar os dados.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     if (loading) {
         return <div className={styles.container}><p>Carregando...</p></div>;
@@ -76,5 +104,4 @@ export default function GamePreview({ hasOngoingGame = false }: GamePreviewProps
             </div>
         </div>
     );
-
 }
