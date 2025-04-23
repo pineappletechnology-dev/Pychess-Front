@@ -1,0 +1,54 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.topPlayersContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 10px;
+    width: 90%;
+}
+
+.bestContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    width: 90%;
+
+    border: 1px solid #c9c9c9;
+    border-radius: 15px;
+}
+
+.bestName {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.bestTitle {
+    font-weight: 800;
+}
+
+.bestDesc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
