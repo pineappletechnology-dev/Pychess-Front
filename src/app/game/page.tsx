@@ -25,7 +25,6 @@ export default function Game() {
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const [lastGame, setLastGame] = useState<LastGame | null>(null);
 
-
     useEffect(() => {
         const fetchData = async () => {
             const token = localStorage.getItem('token');
@@ -74,6 +73,9 @@ export default function Game() {
         );
     }
 
+    const handleClick = (caminho: string) => {
+        router.push(`/${caminho}`);
+    };
 
     return (
         <div className={styles.container}>
@@ -93,9 +95,9 @@ export default function Game() {
 
                 <p>Menu rápido</p>
                 <div className={styles.quickMenu}>
-                    <InfoButton iconName="history.svg" title="Histórico Geral" text="Ver partidas anteriores"></InfoButton>
+                    <InfoButton iconName="history.svg" title="Histórico Geral" text="Ver partidas anteriores" onClick={() => handleClick('history')}></InfoButton>
                     <InfoButton iconName="info.svg" title="Sobre" text="Conheça sobre a plataforma"></InfoButton>
-                    <InfoButton iconName="crown.svg" title="Ranking" text="Ver o ranking dos jogadores"></InfoButton>
+                    <InfoButton iconName="crown.svg" title="Ranking" text="Ver o ranking dos jogadores" onClick={() => handleClick('ranking')}></InfoButton>
                 </div>
                 <p>Últimos movimentos</p>
                 <GamePreview hasOngoingGame={hasOngoingGame} />
