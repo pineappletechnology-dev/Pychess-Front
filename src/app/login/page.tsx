@@ -57,6 +57,8 @@ export default function Login() {
             }
 
             localStorage.setItem('token', data.token);
+            localStorage.setItem('user_id', data.user_id);
+
             router.push('/game');
         } catch {
             setError('Erro ao conectar com o servidor.');
