@@ -1,3 +1,5 @@
+'use client';
+
 import '../styles/globals.css'
 import Image from "next/image";
 import styles from "./styles.module.css"
@@ -5,16 +7,31 @@ import Header from "@/components/Header/Header";
 import GenericButton from '@/components/GenericButton/GenericButton';
 import Footer from '@/components/Footer/Footer';
 
+import { useRouter } from 'next/navigation';
+
 
 export default function Register() {
+
+    const router = useRouter();
+
+    const handleClick = () => {
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            router.push('/game');
+        } else {
+            router.push('/login');
+        }
+    };
+
 
     return (
         <div className={styles.main}>
             <Header></Header>
             <div className={styles.mainPageContainer}>
                 <div className={styles.welcomeContainer}>
-                <div className={styles.welcomeImage}></div>
-                <div className={styles.welcomeLabel}>Bem vindo(a) ao PyChess</div>
+                    <div className={styles.welcomeImage}></div>
+                    <div className={styles.welcomeLabel}>Bem vindo(a) ao PyChess</div>
                 </div>
                 <div className={styles.landInfoLayout}>
                     <div className={styles.landInfo}>
@@ -39,9 +56,9 @@ export default function Register() {
                     </div>
                 </div>
 
-                <GenericButton text="Jogue agora"></GenericButton>
+                <GenericButton text="Jogue agora" onClick={handleClick}></GenericButton>
             </div>
-                <Footer iconName='icon-home.svg' text='Login'></Footer>
+            <Footer iconName='icon-home.svg' text='Login'></Footer>
         </div>
 
     )

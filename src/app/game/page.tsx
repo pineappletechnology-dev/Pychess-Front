@@ -30,7 +30,7 @@ export default function Game() {
         const fetchData = async () => {
             const token = localStorage.getItem('token');
             if (!token) {
-                router.push('/');
+                router.push('/login');
                 return;
             }
 
