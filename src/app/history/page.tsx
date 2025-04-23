@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 import '../../styles/globals.css'
 import styles from './styles.module.css'
 import Header from '@/components/Header/Header'
@@ -14,6 +16,7 @@ interface Game {
 }
 
 export default function History() {
+    const router = useRouter();
     const [games, setGames] = useState<Game[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -37,6 +40,10 @@ export default function History() {
             .finally(() => setLoading(false));
     });
 
+    const handleClick = (id: number) => {
+        router.push(`/gamehistory/${id}`);
+    }
+
     if (loading) {
         return (
             <div className={styles.spinnerContainer}>
@@ -56,6 +63,7 @@ export default function History() {
                             username={game.opponent}
                             result={game.result === 'win' ? 'Vitória' : 'Derrota'}
                             time='15' // Pensar em algo sobre esse tempo
+                            onClick={() => handleClick(game.id)}
                         />
                     ))
                 ) : (

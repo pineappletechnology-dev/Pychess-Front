@@ -1,0 +1,94 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    gap: 1rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.boardWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #333;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.buttons button:hover {
+    background-color: #555;
+}
+
+.movesList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    max-width: 600px;
+    border-top: 1px solid #ccc;
+}
+
+.moveItem {
+    font-size: 0.95rem;
+    background-color: #f4f4f4;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+}
+
+.currentMove {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    padding: 0.5rem 1rem;
+}
+
+.progressBarWrapper {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-direction: column;
+}
+
+.progressBarBackground {
+    width: 100%;
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+
+.progressBar {
+    height: 100%;
+    background-color: #4caf50;
+    border-radius: 5px;
+}
+
+.progressText {
+    font-size: 1rem;
+    color: #333;
+    font-weight: bold;
+}
