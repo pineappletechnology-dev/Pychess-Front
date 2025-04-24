@@ -1,0 +1,15 @@
+.GameButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    width: 90%;
+    border-radius: 15px;
+
+    background-color: #2CC524;
+    color: white;
+}
+
+.continueGame {
+    background-color: #5288FF;
+}

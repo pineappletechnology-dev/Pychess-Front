@@ -1,0 +1,14 @@
+.rankContainer {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #c9c9c9;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.rankName {
+    font-weight: 800;
+}
