@@ -14,7 +14,9 @@
 
 .quickMenu {
     display: flex;
+    flex-direction: column;
     gap: 10px;
     justify-content: center;
-    width: 100%;
+    align-items: center;
+    width: 90%;
 }
