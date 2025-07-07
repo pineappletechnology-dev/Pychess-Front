@@ -15,6 +15,7 @@ import GamePreview from '@/components/GamePreview/GamePreview';
 type LastGame = {
     username: string;
     result: string;
+    duration: string;
 };
 
 export default function Game() {
@@ -34,13 +35,9 @@ export default function Game() {
             }
 
             try {
-                const verifyRes = await fetch(`${API_URL}/verify-token/?token=${token}`, {
-                    headers: { Authorization: `Bearer ${token}` },
-                    cache: 'no-store'
-                });
 
-                if (!verifyRes.ok) {
-                    router.push('/');
+                if (!token) {
+                    router.push('/login');
                     return;
                 }
 
@@ -87,7 +84,7 @@ export default function Game() {
                     <GameInfoCard
                         username={lastGame.username}
                         result={lastGame.result}
-                        time='15 Minutos'
+                        time={lastGame.duration}
                     />
                 ) : (
                     <p>Carregando última partida...</p>

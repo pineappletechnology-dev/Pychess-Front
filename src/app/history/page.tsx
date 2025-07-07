@@ -10,9 +10,10 @@ import Footer from '@/components/Footer/Footer'
 import GameInfoCard from '@/components/GameInfoCard/GameInfoCard'
 
 interface Game {
+    username: string;
     id: number;
-    opponent: string;
     result: string;
+    duration: string
 }
 
 export default function History() {
@@ -60,9 +61,9 @@ export default function History() {
                     games.map(game => (
                         <GameInfoCard
                             key={game.id}
-                            username={game.opponent}
+                            username={game.username}
                             result={game.result === 'win' ? 'Vitória' : 'Derrota'}
-                            time='15' // Pensar em algo sobre esse tempo
+                            time={game.duration}
                             onClick={() => handleClick(game.id)}
                         />
                     ))
