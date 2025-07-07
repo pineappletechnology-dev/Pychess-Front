@@ -39,7 +39,7 @@ export default function History() {
                 console.error("Erro ao buscar histórico:", err);
             })
             .finally(() => setLoading(false));
-    });
+    }, []);
 
     const handleClick = (id: number) => {
         router.push(`/gamehistory/${id}`);
@@ -62,7 +62,7 @@ export default function History() {
                         <GameInfoCard
                             key={game.id}
                             username={game.username}
-                            result={game.result === 'win' ? 'Vitória' : 'Derrota'}
+                            result={game.result}
                             time={game.duration}
                             onClick={() => handleClick(game.id)}
                         />

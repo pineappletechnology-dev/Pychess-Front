@@ -37,11 +37,6 @@ export default function Game() {
 
             try {
 
-                if (!token) {
-                    router.push('/login');
-                    return;
-                }
-
                 const gameBoardRes = await fetch(`${API_URL}/game_board/`);
                 if (gameBoardRes.ok) {
                     setHasOngoingGame(true);
@@ -102,7 +97,6 @@ export default function Game() {
                     <InfoButton iconName="info.svg" title="Sobre" text="Conheça sobre a plataforma"></InfoButton>
                     <InfoButton iconName="crown.svg" title="Ranking" text="Ver o ranking dos jogadores" onClick={() => handleClick('ranking')}></InfoButton>
                 </div>
-                <p>Últimos movimentos</p>
                 <GamePreview hasOngoingGame={hasOngoingGame} />
             </div>
             <Footer iconName="icon-game.svg" text="Jogo"></Footer>

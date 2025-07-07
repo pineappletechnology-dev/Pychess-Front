@@ -99,6 +99,7 @@ export default function GamePreview({ hasOngoingGame = false }: GamePreviewProps
                     winProbabilityBlack={winProbability.black}
                 />
             </div>
+            <p>Últimos movimentos</p>
             <div className={styles.movesContainer}>
                 <GameMoves moves={gameMoves} />
             </div>
