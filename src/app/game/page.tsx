@@ -13,6 +13,7 @@ import InfoButton from "@/components/InfoButton/InfoButton";
 import GamePreview from '@/components/GamePreview/GamePreview';
 
 type LastGame = {
+    id: number;
     username: string;
     result: string;
     duration: string;
@@ -74,6 +75,10 @@ export default function Game() {
         router.push(`/${caminho}`);
     };
 
+    const historyClick = (id: number) => {
+        router.push(`/gamehistory/${id}`);
+    };
+
     return (
         <div className={styles.container}>
             <Header></Header>
@@ -85,6 +90,7 @@ export default function Game() {
                         username={lastGame.username}
                         result={lastGame.result}
                         time={lastGame.duration}
+                        onClick={() => historyClick(lastGame.id)}
                     />
                 ) : (
                     <p>Carregando última partida...</p>
