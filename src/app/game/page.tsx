@@ -26,6 +26,8 @@ export default function Game() {
     const [loading, setLoading] = useState(true);
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const [lastGame, setLastGame] = useState<LastGame | null>(null);
+    const [roboConectado, setRoboConectado] = useState(false);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -46,6 +48,12 @@ export default function Game() {
                 if (lastGameRes.ok) {
                     const data = await lastGameRes.json();
                     setLastGame(data);
+                }
+
+                const roboRes = await fetch(`${API_URL}/get-robo-mode/`);
+                if (roboRes.ok) {
+                    const roboData = await roboRes.json();
+                    setRoboConectado(roboData.robo_mode === true);
                 }
 
             } catch (err) {
@@ -77,6 +85,24 @@ export default function Game() {
     return (
         <div className={styles.container}>
             <Header></Header>
+            {roboConectado && (
+                <div style={{
+                    position: 'absolute',
+                    top: '10px',
+                    left: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    backgroundColor: '#e0ffe0',
+                    padding: '6px 10px',
+                    borderRadius: '8px',
+                    boxShadow: '0 0 6px rgba(0,0,0,0.2)',
+                    zIndex: 1000
+                }}>
+                    <span style={{ fontWeight: 500, color: '#006600' }}>Robô conectado</span>
+                </div>
+            )}
+
             <div className={styles.content}>
                 <GameButton hasOngoingGame={hasOngoingGame} />
                 <p>Última partida</p>
