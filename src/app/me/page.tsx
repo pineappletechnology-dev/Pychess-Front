@@ -133,10 +133,19 @@ export default function Me() {
                                             body: JSON.stringify({ user_id: userData.id }),
                                         });
                                         if (res.ok) {
-                                            setTokenSent(true);
-                                            setShowModal(true);
+                                            const data = await res.json();
+
+                                            if (data.message?.includes("já utilizado")) {
+                                                setMessage("✅ Modo robô já estava ativo nos últimos 7 dias!");
+                                                setRoboMode(true);
+                                                setShowModal(false);
+                                            } else {
+                                                setTokenSent(true);
+                                                setShowModal(true);
+                                            }
                                         } else {
-                                            alert(`Erro ao gerar token`);
+                                            const err = await res.json();
+                                            alert(`Erro ao gerar token: ${err.detail || 'Erro desconhecido'}`);
                                         }
                                     } catch (e) {
                                         alert(`Erro na comunicação: ${e}`);
