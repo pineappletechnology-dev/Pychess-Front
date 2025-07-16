@@ -15,16 +15,26 @@ export default function HistoryPage() {
     const [moves, setMoves] = useState<string[]>([]);
     const [currentMoveIndex, setCurrentMoveIndex] = useState(-1);
     const [fen, setFen] = useState("start");
+    const [gameInfo, setGameInfo] = useState<{ result: string; duration: string } | null>(null);
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
-        const fetchMoves = async () => {
-            const res = await fetch(`${API_URL}/game_moves/${id}`);
-            const data = await res.json();
-            setMoves(data.moves);
+        const fetchData = async () => {
+            try {
+                const movesRes = await fetch(`${API_URL}/game_moves/${id}`);
+                const movesData = await movesRes.json();
+                setMoves(movesData.moves);
+
+                const infoRes = await fetch(`${API_URL}/game-info/${id}`);
+                const infoData = await infoRes.json();
+                setGameInfo(infoData);
+            } catch (error) {
+                console.error("Erro ao carregar dados do jogo:", error);
+            }
         };
-        fetchMoves();
+
+        fetchData();
     }, [id]);
 
     const applyMovesUntil = (index: number) => {
@@ -73,8 +83,8 @@ export default function HistoryPage() {
             </div>
 
             <div className={styles.movesList}>
-                <InfoButton iconName="info.svg" title="Resultado" text="Vitoria"></InfoButton>
-                <InfoButton iconName="info.svg" title="Tempo de jogo" text="15 minutos"></InfoButton>
+                <InfoButton iconName="info.svg" title="Resultado" text={gameInfo?.result || '...'}></InfoButton>
+                <InfoButton iconName="info.svg" title="Tempo de jogo" text={gameInfo?.duration || '...'}></InfoButton>
             </div>
 
             <div className={styles.buttons}>

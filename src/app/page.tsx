@@ -9,21 +9,45 @@ import Footer from '@/components/Footer/Footer';
 
 import { useRouter } from 'next/navigation';
 
-
 export default function Register() {
 
     const router = useRouter();
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-    const handleClick = () => {
+    const handleClick = async () => {
         const token = localStorage.getItem('token');
 
-        if (token) {
-            router.push('/game');
-        } else {
+        if (!token) {
+            router.push('/login');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_URL}/verify-token/?token=${token}`, {
+                method: 'GET',
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data.valid) {
+                    router.push('/game');
+                } else {
+                    // Token inválido por alguma razão inesperada
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user_id');
+                    router.push('/login');
+                }
+            } else {
+                // Token expirado ou inválido
+                localStorage.removeItem('token');
+                localStorage.removeItem('user_id');
+                router.push('/login');
+            }
+        } catch (error) {
+            console.error("Erro ao verificar o token:", error);
             router.push('/login');
         }
     };
-
 
     return (
         <div className={styles.main}>

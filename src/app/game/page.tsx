@@ -13,8 +13,10 @@ import InfoButton from "@/components/InfoButton/InfoButton";
 import GamePreview from '@/components/GamePreview/GamePreview';
 
 type LastGame = {
+    id: number;
     username: string;
     result: string;
+    duration: string;
 };
 
 export default function Game() {
@@ -24,6 +26,8 @@ export default function Game() {
     const [loading, setLoading] = useState(true);
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const [lastGame, setLastGame] = useState<LastGame | null>(null);
+    const [roboConectado, setRoboConectado] = useState(false);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,15 +38,6 @@ export default function Game() {
             }
 
             try {
-                const verifyRes = await fetch(`${API_URL}/verify-token/?token=${token}`, {
-                    headers: { Authorization: `Bearer ${token}` },
-                    cache: 'no-store'
-                });
-
-                if (!verifyRes.ok) {
-                    router.push('/');
-                    return;
-                }
 
                 const gameBoardRes = await fetch(`${API_URL}/game_board/`);
                 if (gameBoardRes.ok) {
@@ -53,6 +48,12 @@ export default function Game() {
                 if (lastGameRes.ok) {
                     const data = await lastGameRes.json();
                     setLastGame(data);
+                }
+
+                const roboRes = await fetch(`${API_URL}/get-robo-mode/`);
+                if (roboRes.ok) {
+                    const roboData = await roboRes.json();
+                    setRoboConectado(roboData.robo_mode === true);
                 }
 
             } catch (err) {
@@ -77,9 +78,31 @@ export default function Game() {
         router.push(`/${caminho}`);
     };
 
+    const historyClick = (id: number) => {
+        router.push(`/gamehistory/${id}`);
+    };
+
     return (
         <div className={styles.container}>
             <Header></Header>
+            {roboConectado && (
+                <div style={{
+                    position: 'absolute',
+                    top: '10px',
+                    left: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    backgroundColor: '#e0ffe0',
+                    padding: '6px 10px',
+                    borderRadius: '8px',
+                    boxShadow: '0 0 6px rgba(0,0,0,0.2)',
+                    zIndex: 1000
+                }}>
+                    <span style={{ fontWeight: 500, color: '#006600' }}>Robô conectado</span>
+                </div>
+            )}
+
             <div className={styles.content}>
                 <GameButton hasOngoingGame={hasOngoingGame} />
                 <p>Última partida</p>
@@ -87,7 +110,8 @@ export default function Game() {
                     <GameInfoCard
                         username={lastGame.username}
                         result={lastGame.result}
-                        time='15 Minutos'
+                        time={lastGame.duration}
+                        onClick={() => historyClick(lastGame.id)}
                     />
                 ) : (
                     <p>Carregando última partida...</p>
@@ -99,7 +123,6 @@ export default function Game() {
                     <InfoButton iconName="info.svg" title="Sobre" text="Conheça sobre a plataforma"></InfoButton>
                     <InfoButton iconName="crown.svg" title="Ranking" text="Ver o ranking dos jogadores" onClick={() => handleClick('ranking')}></InfoButton>
                 </div>
-                <p>Últimos movimentos</p>
                 <GamePreview hasOngoingGame={hasOngoingGame} />
             </div>
             <Footer iconName="icon-game.svg" text="Jogo"></Footer>
