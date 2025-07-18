@@ -1,4 +1,6 @@
+import Header from '@/components/Header/Header'
 import '../styles/globals.css'
+
 
 export const metadata = {
   title: 'Next.js',
@@ -12,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br">
-      <body>{children}</body>
+      <body className="antialiased">
+        <Header />
+        <main className="bg-[#f1f5f9]">{ children }</main>
+      </body>
     </html>
   )
 }

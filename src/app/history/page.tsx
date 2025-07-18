@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 
 import '../../styles/globals.css'
 import styles from './styles.module.css'
-import Header from '@/components/Header/Header'
 import Footer from '@/components/Footer/Footer'
 import GameInfoCard from '@/components/GameInfoCard/GameInfoCard'
 
@@ -55,7 +54,6 @@ export default function History() {
 
     return (
         <div className={styles.container}>
-            <Header />
             <div className={styles.content}>
                 {games.length > 0 ? (
                     games.map(game => (

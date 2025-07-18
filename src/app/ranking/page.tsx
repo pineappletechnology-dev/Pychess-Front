@@ -1,7 +1,6 @@
 'use client';
 
 import '../../styles/globals.css'
-import Header from '@/components/Header/Header'
 import styles from './styles.module.css'
 import Footer from '@/components/Footer/Footer'
 import RankItem from '@/components/RankItem/RankItem'
@@ -38,7 +37,6 @@ export default function Ranking() {
     if (loading) {
         return (
             <div className={styles.container}>
-                <Header />
                 <div className={styles.spinnerContainer}>
                     <div className={styles.spinner}></div>
                 </div>
@@ -52,7 +50,6 @@ export default function Ranking() {
 
     return (
         <div className={styles.container}>
-            <Header></Header>
             <div className={styles.content}>
                 {topUser && (
                     <div className={styles.bestContainer}>

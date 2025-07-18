@@ -6,7 +6,7 @@ import '../../styles/globals.css';
 import styles from './styles.module.css';
 import Image from "next/image";
 import Footer from '@/components/Footer/Footer';
-import Header from '@/components/Header/Header';
+
 
 export default function Me() {
     const [userData, setUserData] = useState({
@@ -108,7 +108,6 @@ export default function Me() {
 
     return (
         <div className={styles.container}>
-            <Header />
             <div className={styles.content}>
                 <div className={styles.dataInputContainer}>
 

@@ -1,6 +1,5 @@
 'use client';
 
-import Header from '@/components/Header/Header';
 import '../../styles/globals.css'
 import styles from './styles.module.css'
 import GameDetailPanel from "@/components/GameDetailPanel/GameDetailPanel";
@@ -56,7 +55,6 @@ export default function GameDetails() {
 
     return (
         <div className={styles.container}>
-            <Header />
             <div className={styles.content}>
                 <p>Informações do jogador</p>
                 <GameDetailPanel

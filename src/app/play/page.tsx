@@ -7,7 +7,6 @@ import { Chess } from 'chess.js';
 
 import '../../styles/globals.css';
 import styles from './styles.module.css';
-import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 
 export default function GameboardPage() {
@@ -135,8 +134,6 @@ export default function GameboardPage() {
 
     return (
         <div className={styles.container}>
-            <Header />
-
             <button
                 onClick={() => setShowSettings(prev => !prev)}
                 className={styles.button}

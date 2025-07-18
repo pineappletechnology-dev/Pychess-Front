@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import '../../styles/globals.css'
 import styles from './styles.module.css'
 import Footer from "@/components/Footer/Footer";
-import Header from "@/components/Header/Header";
 import GameInfoCard from "@/components/GameInfoCard/GameInfoCard";
 import GameButton from "@/components/GameButton/GameButton";
 import InfoButton from "@/components/InfoButton/InfoButton";
@@ -84,7 +83,6 @@ export default function Game() {
 
     return (
         <div className={styles.container}>
-            <Header></Header>
             {roboConectado && (
                 <div style={{
                     position: 'absolute',

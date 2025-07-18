@@ -7,7 +7,6 @@ import { Chess } from 'chess.js';
 import '../../../styles/globals.css'
 import styles from './styles.module.css'
 import Footer from "@/components/Footer/Footer";
-import Header from "@/components/Header/Header";
 import InfoButton from "@/components/InfoButton/InfoButton";
 
 export default function HistoryPage() {
@@ -63,7 +62,6 @@ export default function HistoryPage() {
 
     return (
         <div className={styles.container}>
-            <Header></Header>
             <h2 className={styles.title}>Jogo #{id}</h2>
 
             <div className={styles.boardWrapper}>
