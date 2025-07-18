@@ -1,6 +1,5 @@
 'use client';
 
-import '../styles/globals.css'
 import Image from "next/image";
 import styles from "./styles.module.css"
 import Header from "@/components/Header/Header";
