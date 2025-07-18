@@ -1,17 +1,36 @@
 'use client';
 
 import Image from "next/image";
-import styles from "./styles.module.css"
-import Header from "@/components/Header/Header";
+
 import GenericButton from '@/components/GenericButton/GenericButton';
 import Footer from '@/components/Footer/Footer';
 
 import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { Bot, BarChart3, Lightbulb } from "lucide-react";
 
 export default function Register() {
 
     const router = useRouter();
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    
+    const chessMessages = [
+        "O primeiro programa de xadrez foi escrito por Alan Turing em 1951",
+        "O termo 'Xeque-mate' vem do persa 'Shah Mat', que significa 'O rei está morto'",
+        "Existem mais possibilidades de jogos de xadrez do que átomos no universo"
+    ];
+    
+    const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentMessageIndex((prevIndex) => 
+                (prevIndex + 1) % chessMessages.length
+            );
+        }, 2000);
+        
+        return () => clearInterval(interval);
+    }, [chessMessages.length]);
 
     const handleClick = async () => {
         const token = localStorage.getItem('token');
@@ -49,37 +68,73 @@ export default function Register() {
     };
 
     return (
-        <div className={styles.main}>
-            <Header></Header>
-            <div className={styles.mainPageContainer}>
-                <div className={styles.welcomeContainer}>
-                    <div className={styles.welcomeImage}></div>
-                    <div className={styles.welcomeLabel}>Bem vindo(a) ao PyChess</div>
+        <div className="">
+            <div className="lg:max-w-[800px] px-5 mx-auto">
+                <div className="py-12">
+                    <div className="flex items-center flex-col gap-8">
+                        <Image 
+                            src="/images/chessimage.png" 
+                            alt="Banner" 
+                            width={832} 
+                            height={256} 
+                            className="max-h-[256px] w-full rounded-xl" 
+                        />
+                        <div className="bg-blue-600 text-center w-full p-4 text-2xl text-white rounded-xl font-medium">
+                            Bem vindo(a) ao PyChess
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-8 py-8">
+                        <div className="bg-white p-8 flex items-center gap-4 rounded-xl shadow">
+                            <div className="bg-blue-600 max-w-max p-3 rounded-xl">
+                                <Bot size={36} className="text-white" />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <p className="font-semibold text-lg">Você VS. a máquina</p>
+                                <p className="">
+                                    Enfrente um braço robótico em uma partida de xadrez totalmente automatizada
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="bg-white p-8 flex items-center gap-4 rounded-xl shadow">
+                            <div className="bg-green-600 max-w-max p-3 rounded-xl">
+                                <BarChart3 size={36} className="text-white" />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <p className="font-semibold text-lg">Monitore suas jogadas</p>
+                                <p className="">
+                                    Registre suas partidas e confira pelo seu smartphone
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="bg-[#e4f0ff] border border-[#bfdbfe] p-8 flex gap-4 rounded-xl shadow">
+                            <div className="bg-purple-600 max-w-max p-3 max-h-[60px] rounded-xl">
+                                <Lightbulb size={36} className="text-white" />
+                            </div>
+                            <div className="flex flex-col gap-2 w-full">
+                                <p className="font-semibold text-lg">Sabia que?</p>
+                                <p className="text-[#1e4eb7]">
+                                    {chessMessages[currentMessageIndex]}
+                                </p>
+                                <div className="flex justify-center gap-2 mt-3">
+                                    {chessMessages.map((_, index) => (
+                                        <div
+                                            key={index}
+                                            className={`w-[10px] h-[10px] rounded-full bg-blue-600 transition-opacity duration-300 ${
+                                                index === currentMessageIndex ? 'opacity-100' : 'opacity-30'
+                                            }`}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-center">
+                        <GenericButton text="Jogue agora" onClick={handleClick}></GenericButton>
+                    </div>
                 </div>
-                <div className={styles.landInfoLayout}>
-                    <div className={styles.landInfo}>
-                        <Image src="/icons/garra.svg" alt="Profile" width={50} height={50} />
-                        <p className={styles.landInfoTitle}>Você VS. a máquina</p>
-                        <p className={styles.landInfoDescription}>
-                            Enfrente um braço robótico em uma partida de xadrez totalmente automatizada
-                        </p>
-                    </div>
-
-                    <div className={styles.landInfo}>
-                        <Image src="/icons/dados.svg" alt="Profile" width={50} height={50} />
-                        <p className={styles.landInfoTitle}>Monitore suas jogadas</p>
-                        <p className={styles.landInfoDescription}>
-                            Registre suas partidas e confira pelo seu smartphone
-                        </p>
-                    </div>
-
-                    <div className={styles.didYouKnowLayout}>
-                        <p className={styles.didYouKnowTitle}>Sabia que?</p>
-                        <p className={styles.didYouKnowDesc}>Existem mais possibilidades de jogos de xadrez do que átomos no universo</p>
-                    </div>
-                </div>
-
-                <GenericButton text="Jogue agora" onClick={handleClick}></GenericButton>
             </div>
             <Footer iconName='icon-home.svg' text='Login'></Footer>
         </div>
