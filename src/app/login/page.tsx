@@ -6,9 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import PasswordInput from '@/components/PasswordInput/PasswordInput';
 import '../../styles/globals.css'
 import Input from "@/components/Input/Input";
-import GenericButton from '@/components/GenericButton/GenericButton';
-import styles from './styles.module.css'
-import Footer from '@/components/Footer/Footer';
+
 import Image from 'next/image';
 
 export default function Login() {
@@ -49,6 +47,7 @@ export default function Login() {
 
             if (!res.ok) {
                 const errorMessage = Array.isArray(data.detail)
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     ? data.detail.map((d: any) => d.msg).join(' | ')
                     : data.detail || 'Erro ao fazer login';
 
@@ -66,21 +65,21 @@ export default function Login() {
     };
 
     return (
-        <div className={styles.pageContainer}>
+        <div className="min-h-dvh md:flex justify-center items-center flex-col md:pb-56">
 
             {showSuccess && (
-                <div className={styles.successAlert}>
+                <div className="">
                     {successMessage}
                 </div>
             )}
 
-            <div className={styles.splashFooterContainer}>
-                <Image src="/icons/castle.svg" alt="Profile" width={50} height={50} />
-                <p>PyChess</p>
-                <p>Entre com sua conta para jogar</p>
+            <div className="flex flex-col items-center justify-center md:pb-5 md:pt-0 py-5">
+                <Image src="/icons/castle.svg" alt="Profile" width={65} height={65} className='w-16 md:w-20' />
+                <p className='text-3xl font-medium'>Acessar conta</p>
+                <p className='text-lg opacity-75 mt-1'>Entre com sua conta para jogar</p>
             </div>
 
-            <form className={styles.loginContainer} onSubmit={handleSubmit}>
+            <form className="bg-white border-y border-gray-300 md:border-0 px-8 py-8 md:rounded-lg flex-col flex gap-5 md:shadow" onSubmit={handleSubmit}>
                 <Input
                     inputLabel="Nome de usuário"
                     inputName="username"
@@ -95,21 +94,25 @@ export default function Login() {
                     value={password}
                     onChange={handleInputChange(setPassword)}
                 />
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <GenericButton text='Entrar' type="submit" />
 
-                <div className={styles.rememberContainer}>
+                <div className="flex items-center gap-1">
                     <input type="checkbox" name="remember" id="remember" />
                     <label htmlFor="remember">Lembrar de mim</label>
                 </div>
 
-                <a href="#">Esqueceu sua senha?</a>
-                <p className={styles.loginOptions}>
-                    Não tem uma conta? <a className={styles.linkHighlight} href="/register">Cadastre-se</a>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                <button className='bg-gradient-to-r from-blue-600 to-blue-500 w-full py-3 uppercase text-white md:px-40 mx-auto rounded-md font-medium text-lg cursor-pointer hover:bg-blue-400 transition-all'>
+                    <span className='text-center'>Entrar</span>
+                </button>
+
+                <a href="#" className='text-center hover:text-blue-500 transition-all'>Esqueceu sua senha?</a>
+                <p className="text-center">
+                    Não tem uma conta?
+                    <a className="text-blue-600 hover:text-blue-500 transition-all ml-1" href="/register">
+                        Cadastre-se
+                    </a>
                 </p>
             </form>
-
-            <Footer iconName='person.svg' text='Login'></Footer>
         </div>
     )
 }
