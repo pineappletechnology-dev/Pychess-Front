@@ -9,10 +9,10 @@ body {
 }
 
 /* Desabilita o comportamento de links sublinhados em navegadores */
-a {
+/* a {
   text-decoration: none;
   color: inherit;
-}
+} */
 
 /* Remove os estilos padrão de botões */
 /* button {

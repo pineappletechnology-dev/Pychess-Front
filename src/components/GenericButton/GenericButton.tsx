@@ -6,8 +6,8 @@ interface GenericButtonProps {
 
 export default function GenericButton({ text, type = "button", onClick }: GenericButtonProps) {
     return (
-        <button type={type} 
-            className="bg-blue-500 py-4 text-white px-40 mx-auto rounded-md font-medium text-lg cursor-pointer hover:bg-blue-400 transition-all" 
+        <button type={type}
+            className="bg-green-600 py-4 uppercase text-white px-28 md:px-40 mx-auto rounded-md font-medium text-lg cursor-pointer hover:bg-green-400 transition-all"
             onClick={onClick}>
             {text}
         </button>
