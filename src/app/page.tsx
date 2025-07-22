@@ -3,7 +3,6 @@
 import Image from "next/image";
 
 import GenericButton from '@/components/GenericButton/GenericButton';
-import Footer from '@/components/Footer/Footer';
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
@@ -13,22 +12,22 @@ export default function Register() {
 
     const router = useRouter();
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
-    
+
     const chessMessages = [
         "O primeiro programa de xadrez foi escrito por Alan Turing em 1951",
         "O termo 'Xeque-mate' vem do persa 'Shah Mat', que significa 'O rei está morto'",
         "Existem mais possibilidades de jogos de xadrez do que átomos no universo"
     ];
-    
+
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
-    
+
     useEffect(() => {
         const interval = setInterval(() => {
-            setCurrentMessageIndex((prevIndex) => 
+            setCurrentMessageIndex((prevIndex) =>
                 (prevIndex + 1) % chessMessages.length
             );
         }, 2000);
-        
+
         return () => clearInterval(interval);
     }, [chessMessages.length]);
 
@@ -72,20 +71,20 @@ export default function Register() {
             <div className="lg:max-w-[800px] px-5 mx-auto">
                 <div className="py-12">
                     <div className="flex items-center flex-col gap-8">
-                        <Image 
-                            src="/images/chessimage.png" 
-                            alt="Banner" 
-                            width={832} 
-                            height={256} 
-                            className="max-h-[256px] w-full rounded-xl" 
+                        <Image
+                            src="/images/chessimage.png"
+                            alt="Banner"
+                            width={832}
+                            height={256}
+                            className="max-h-[256px] w-full rounded-xl"
                         />
-                        <div className="bg-blue-600 text-center w-full p-4 text-2xl text-white rounded-xl font-medium">
+                        <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-center w-full p-4 text-xl md:text-2xl text-white rounded-xl font-medium">
                             Bem vindo(a) ao PyChess
                         </div>
                     </div>
                     <div className="flex flex-col gap-8 py-8">
                         <div className="bg-white p-8 flex items-center gap-4 rounded-xl shadow">
-                            <div className="bg-blue-600 max-w-max p-3 rounded-xl">
+                            <div className="bg-gradient-to-r from-blue-600 to-blue-500 max-w-max p-3 rounded-xl">
                                 <Bot size={36} className="text-white" />
                             </div>
                             <div className="flex flex-col gap-2">
@@ -97,7 +96,7 @@ export default function Register() {
                         </div>
 
                         <div className="bg-white p-8 flex items-center gap-4 rounded-xl shadow">
-                            <div className="bg-green-600 max-w-max p-3 rounded-xl">
+                            <div className="bg-gradient-to-r from-green-600 to-green-500 max-w-max p-3 rounded-xl">
                                 <BarChart3 size={36} className="text-white" />
                             </div>
                             <div className="flex flex-col gap-2">
@@ -108,8 +107,8 @@ export default function Register() {
                             </div>
                         </div>
 
-                        <div className="bg-[#e4f0ff] border border-[#bfdbfe] p-8 flex gap-4 rounded-xl shadow">
-                            <div className="bg-purple-600 max-w-max p-3 max-h-[60px] rounded-xl">
+                        <div className="bg-[#e4f0ff] border border-[#bfdbfe] p-8 flex gap-4 rounded-xl shadow mb-20">
+                            <div className="bg-gradient-to-r from-purple-600 to-purple-500 max-w-max p-3 max-h-[60px] rounded-xl">
                                 <Lightbulb size={36} className="text-white" />
                             </div>
                             <div className="flex flex-col gap-2 w-full">
@@ -121,9 +120,8 @@ export default function Register() {
                                     {chessMessages.map((_, index) => (
                                         <div
                                             key={index}
-                                            className={`w-[10px] h-[10px] rounded-full bg-blue-600 transition-opacity duration-300 ${
-                                                index === currentMessageIndex ? 'opacity-100' : 'opacity-30'
-                                            }`}
+                                            className={`w-[10px] h-[10px] rounded-full bg-blue-600 transition-opacity duration-300 ${index === currentMessageIndex ? 'opacity-100' : 'opacity-30'
+                                                }`}
                                         />
                                     ))}
                                 </div>
@@ -131,12 +129,14 @@ export default function Register() {
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-center">
-                        <GenericButton text="Jogue agora" onClick={handleClick}></GenericButton>
-                    </div>
+
                 </div>
             </div>
-            <Footer iconName='icon-home.svg' text='Login'></Footer>
+            <footer className="bg-white py-4 border-b border-gray-300 fixed bottom-0 left-0 right-0 border-t">
+                <div className="flex items-center justify-center">
+                    <GenericButton text="Jogue agora" onClick={handleClick}></GenericButton>
+                </div>
+            </footer>
         </div>
 
     )
