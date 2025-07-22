@@ -1,5 +1,3 @@
-import styles from './styles.module.css'
-
 interface inputOptions {
     inputName: string;
     inputText: string;
@@ -10,11 +8,11 @@ interface inputOptions {
 
 export default function Input({ inputName, inputText, inputLabel, value, onChange }: inputOptions) {
     return (
-        <div className={styles.input}>
-            <label htmlFor={inputName} className={styles.inputLabel}>{inputLabel}</label>
+        <div className="flex flex-col gap-1">
+            <label htmlFor={inputName} className="">{inputLabel}</label>
             <input
                 type="text"
-                className={styles.inputText}
+                className="bg-gray-50 px-4 rounded-md border border-gray-300 py-3"
                 name={inputName}
                 id={inputName}
                 placeholder={inputText}

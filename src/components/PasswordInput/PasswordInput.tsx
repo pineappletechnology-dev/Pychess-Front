@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from 'react';
-import styles from './styles.module.css'
 import Image from 'next/image';
 
 interface inputOptions {
@@ -20,20 +19,20 @@ export default function PasswordInput({ inputName, inputText, inputLabel, value,
     };
 
     return (
-        <div className={styles.input}>
-            <label htmlFor={inputName} className={styles.inputLabel}>{inputLabel}</label>
+        <div className="flex flex-col gap-1">
+            <label htmlFor={inputName}>{inputLabel}</label>
 
-            <div className={styles.inputPasswordContainer}>
+            <div className='bg-gray-50 px-4 rounded-md border border-gray-300 py-3 flex justify-between'>
                 <input
                     type={showPassword ? "text" : "password"}
-                    className={styles.inputText}
+                    className=""
                     name={inputName}
                     id={inputName}
                     placeholder={inputText}
                     value={value}
                     onChange={onChange}
                 />
-                <button onClick={togglePasswordVisibility}>
+                <button type='button' onClick={togglePasswordVisibility}>
                     <Image
                         src={showPassword ? "/icons/eye-off.svg" : "/icons/eye-on.svg"}
                         alt="password visibility"
