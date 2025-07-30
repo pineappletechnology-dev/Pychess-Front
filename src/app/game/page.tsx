@@ -5,11 +5,10 @@ import { useRouter } from 'next/navigation';
 
 import '../../styles/globals.css'
 import styles from './styles.module.css'
-import Footer from "@/components/Footer/Footer";
 import GameInfoCard from "@/components/GameInfoCard/GameInfoCard";
-import GameButton from "@/components/GameButton/GameButton";
 import InfoButton from "@/components/InfoButton/InfoButton";
 import GamePreview from '@/components/GamePreview/GamePreview';
+import { Crown, Info, Play, Trophy } from 'lucide-react';
 
 type LastGame = {
     id: number;
@@ -82,7 +81,7 @@ export default function Game() {
     };
 
     return (
-        <div className={styles.container}>
+        <div className='flex'>
             {roboConectado && (
                 <div style={{
                     position: 'absolute',
@@ -101,29 +100,43 @@ export default function Game() {
                 </div>
             )}
 
-            <div className={styles.content}>
-                <GameButton hasOngoingGame={hasOngoingGame} />
-                <p>Última partida</p>
-                {lastGame ? (
-                    <GameInfoCard
-                        username={lastGame.username}
-                        result={lastGame.result}
-                        time={lastGame.duration}
-                        onClick={() => historyClick(lastGame.id)}
-                    />
-                ) : (
-                    <p>Carregando última partida...</p>
-                )}
-
-                <p>Menu rápido</p>
-                <div className={styles.quickMenu}>
-                    <InfoButton iconName="history.svg" title="Histórico Geral" text="Ver partidas anteriores" onClick={() => handleClick('history')}></InfoButton>
-                    <InfoButton iconName="info.svg" title="Sobre" text="Conheça sobre a plataforma"></InfoButton>
-                    <InfoButton iconName="crown.svg" title="Ranking" text="Ver o ranking dos jogadores" onClick={() => handleClick('ranking')}></InfoButton>
+            <div className="container mx-auto px-72 my-10 pb-20">
+                {/* <GameButton hasOngoingGame={hasOngoingGame} /> */}
+                <button
+                    className='bg-gradient-to-r cursor-pointer hover:bg-green-300 transition-all flex items-center gap-2 justify-center py-4 from-green-600 to-green-500 w-full text-white text-lg p-2 rounded-lg'
+                    onClick={() => handleClick('play')}>
+                    <Play />
+                    <span className='font-medium'>Iniciar nova partida virtual</span>
+                </button>
+                <div className='pt-8'>
+                    <p className='text-lg font-bold'>Última partida</p>
+                    {lastGame ? (
+                        <GameInfoCard
+                            username={lastGame.username}
+                            result={lastGame.result}
+                            time={lastGame.duration}
+                            onClick={() => historyClick(lastGame.id)}
+                        />
+                    ) : (
+                        <div className='flex mt-4 justify-center py-8 border border-gray-400 rounded-lg border-dashed'>
+                            <p className='text-gray-500'>Nenhuma partida encontrada</p>
+                        </div>
+                    )}
                 </div>
-                <GamePreview hasOngoingGame={hasOngoingGame} />
+
+                <div className='pt-8'>
+                    <p className='text-lg font-bold'>Menu rápido</p>
+                    <div className='pt-4 flex gap-4 justify-between'>
+                        <InfoButton icon={<Trophy size={32} className='text-orange-500' />} title="Histórico Geral" text="Ver partidas anteriores" onClick={() => handleClick('history')}></InfoButton>
+                        <InfoButton icon={<Info size={32} className='text-blue-500' />} title="Sobre" text="Conheça sobre a plataforma"></InfoButton>
+                        <InfoButton icon={<Crown size={32} className='text-purple-500' />} title="Ranking" text="Ver o ranking dos jogadores" onClick={() => handleClick('ranking')}></InfoButton>
+                    </div>
+                </div>
+                <div className='pt-8'>
+                    <p className='text-lg font-bold'>Últimos movimentos</p>
+                    <GamePreview hasOngoingGame={hasOngoingGame} />
+                </div>
             </div>
-            <Footer iconName="icon-game.svg" text="Jogo"></Footer>
         </div>
     )
 }

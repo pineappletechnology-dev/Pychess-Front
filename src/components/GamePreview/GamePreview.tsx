@@ -83,7 +83,12 @@ export default function GamePreview({ hasOngoingGame = false }: GamePreviewProps
     };
 
     if (loading) {
-        return <div className={styles.container}><p>Carregando...</p></div>;
+        return (
+            <div className='flex mt-4 justify-center py-24 border border-gray-400 rounded-lg border-dashed'>
+                <p className='text-gray-500'>Nenhuma partida encontrada
+                </p>
+            </div>
+        );
     }
 
     if (error) {
@@ -91,18 +96,28 @@ export default function GamePreview({ hasOngoingGame = false }: GamePreviewProps
     }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.boardContainer}>
-                <Chessboard position={fen} boardWidth={400} arePiecesDraggable={false} />
-                <EvaluationBar
-                    winProbabilityWhite={winProbability.white}
-                    winProbabilityBlack={winProbability.black}
-                />
+        <div className='bg-white relative flex flex-col justify-center p-8 mt-4 rounded-xl border border-gray-300'>
+            <div className='bg-gray-50 p-4 w-full h-full rounded-md border border-gray-300'>
+                <div className='flex justify-center items-center gap-6'>
+                    <div className='absolute left-14'>
+                        <EvaluationBar
+                            winProbabilityWhite={winProbability.white}
+                            winProbabilityBlack={winProbability.black}
+                        />
+                    </div>
+
+                    <div className='border border-slate-300'>
+                        <Chessboard position={fen} boardWidth={400} arePiecesDraggable={false} />
+                    </div>
+                </div>
             </div>
-            <p>Últimos movimentos</p>
-            <div className={styles.movesContainer}>
-                <GameMoves moves={gameMoves} />
-            </div>
+
+            <p className='text-lg font-medium mt-8'>Histórico de Movimentos</p>
+            <GameMoves moves={gameMoves} />
+
+            <button className='bg-gray-800 text-white mt-6 px-4 py-3 rounded-md cursor-pointer'>
+                Ver Todos os Movimentos
+            </button>
         </div>
     );
 }
