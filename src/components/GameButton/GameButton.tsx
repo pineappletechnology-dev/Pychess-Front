@@ -3,15 +3,19 @@ import { useRouter } from 'next/navigation';
 
 interface GameButtonProps {
     hasOngoingGame?: boolean;
+    isVirtual?: boolean;
 }
 
-export default function GameButton({ hasOngoingGame = false }: GameButtonProps) {
+export default function GameButton({ hasOngoingGame = false, isVirtual = true }: GameButtonProps) {
     const router = useRouter();
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     const handleClick = async () => {
         if (hasOngoingGame) {
-            router.push('/game'); // ou /game_board se quiser continuar o atual
+            // router.push('/game'); // ou /game_board se quiser continuar o atual
+            if(isVirtual) {
+                router.push('/play/');
+            }
             return;
         }
 
@@ -32,7 +36,8 @@ export default function GameButton({ hasOngoingGame = false }: GameButtonProps) 
                 return;
             }
 
-            window.location.reload();
+            // window.location.reload();
+            router.push('/play/');
 
         } catch (err) {
             console.error("Erro ao iniciar jogo:", err);
