@@ -42,9 +42,14 @@ export default function GameboardPage() {
     }, [gameId, router]);
 
     const getBoardWidth = () => {
-        if (boardSize === 'small') return 300;
-        if (boardSize === 'large') return 500;
-        return 400;
+        if (typeof window === 'undefined') return 800; // fallback pro SSR
+
+        const screenWidth = window.innerWidth;
+
+        if (screenWidth < 500) return 320;          
+        if (screenWidth < 800) return 500;          
+        if (screenWidth < 1200) return 650;         
+        return 800;                                
     };
 
     const toggleTheme = () => setBoardTheme(prev => (prev === 'light' ? 'dark' : 'light'));
@@ -67,12 +72,20 @@ export default function GameboardPage() {
         };
 
         const gameCopy = new Chess(game.fen());
-        const result = gameCopy.move(move);
-
-        if (!result) {
-            setStatusMsg('Movimento inválido! Tente novamente.');
-            return false;
+        console.log(move);
+        let result = undefined;
+        try {
+            result = gameCopy.move(move);
         }
+        catch {
+            result = undefined;
+        }
+        console.log(`resultado: ${result}`);
+
+        // if (!result) {
+        //     setStatusMsg('Movimento inválido! Tente novamente.');
+        //     return false;
+        // }
 
         setGame(gameCopy);
         setFen(gameCopy.fen());
@@ -133,14 +146,17 @@ export default function GameboardPage() {
     }
 
     return (
-        <div className={styles.container}>
-            <button
+        <div className={styles.container}
+        style={
+            { height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }
+        } >
+            {/* <button
                 onClick={() => setShowSettings(prev => !prev)}
                 className={styles.button}
                 style={{ marginBottom: '1rem' }}
             >
                 {showSettings ? 'Ocultar Configurações ▲' : 'Mostrar Configurações ▼'}
-            </button>
+            </button> */}
 
             {showSettings && (
                 <div className={styles.settingsContainer}>
@@ -213,7 +229,13 @@ export default function GameboardPage() {
 
             <div
                 className={styles.content}
-                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent:'center',
+                    gap: '1rem'
+                 }}
             >
                 <h2>Jogo contra Stockfish</h2>
                 <Chessboard
@@ -227,6 +249,8 @@ export default function GameboardPage() {
                     customBoardStyle={{
                         borderRadius: '8px',
                         boxShadow: '0 5px 15px rgba(0,0,0,0.3)',
+                        display: 'block',
+                        margin: '0 auto', // força o centro
                     }}
                     customSquareStyles={{
                         [lastMoveSquares?.from || '']: { backgroundColor: 'rgba(255, 255, 0, 0.6)' },
@@ -239,7 +263,7 @@ export default function GameboardPage() {
                     }
                 />
             </div>
-            <Footer iconName="icon-game.svg" text="Jogo" />
+            {/* <Footer iconName="icon-game.svg" text="Jogo" /> */}
         </div>
     );
 }

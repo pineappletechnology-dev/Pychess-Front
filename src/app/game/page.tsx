@@ -26,6 +26,7 @@ export default function Game() {
     const [lastGame, setLastGame] = useState<LastGame | null>(null);
     const [roboConectado, setRoboConectado] = useState(false);
     const [isVirtual, setisVirtual] = useState(true);
+    const userId = localStorage.getItem('user_id');
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setisVirtual(event.target.checked);
@@ -47,7 +48,7 @@ export default function Game() {
                     setHasOngoingGame(true);
                 }
 
-                const lastGameRes = await fetch(`${API_URL}/last_game/`);
+                const lastGameRes = await fetch(`${API_URL}/last_game/?user_id=${userId}`);
                 if (lastGameRes.ok) {
                     const data = await lastGameRes.json();
                     setLastGame(data);
@@ -114,6 +115,14 @@ export default function Game() {
                     <Play />
                     <span className='font-medium'>Iniciar nova partida virtual</span>
                 </button>
+                <div className='w-full flex justify-center p-4'>
+                    <label className="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" className="sr-only peer"/>
+                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                        <span className="ms-3 text-sm font-medium">Partida virtual</span>
+                    </label>
+                </div>
+                
                 <div className='pt-8'>
                     <p className='text-lg font-bold'>Última partida</p>
                     {lastGame ? (
