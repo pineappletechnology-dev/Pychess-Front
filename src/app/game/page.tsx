@@ -26,7 +26,12 @@ export default function Game() {
     const [lastGame, setLastGame] = useState<LastGame | null>(null);
     const [roboConectado, setRoboConectado] = useState(false);
     const [isVirtual, setisVirtual] = useState(true);
-    const userId = localStorage.getItem('user_id');
+    const [userId, setUserId] = useState<string | null>(null);
+
+    useEffect(() => {
+        const id = localStorage.getItem('user_id');
+        setUserId(id);
+    }, []);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setisVirtual(event.target.checked);
