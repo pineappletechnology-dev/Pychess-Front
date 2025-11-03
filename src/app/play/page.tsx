@@ -1,13 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from 'chess.js';
 
 import '../../styles/globals.css';
 import styles from './styles.module.css';
-import Footer from '@/components/Footer/Footer';
 
 export default function GameboardPage() {
     const router = useRouter();
@@ -24,6 +23,14 @@ export default function GameboardPage() {
     const [lastMoveSquares, setLastMoveSquares] = useState<{ from: string; to: string } | null>(null);
     const [stockfishMove, setStockfishMove] = useState<{ from: string; to: string } | null>(null);
     const [gameStatus, setGameStatus] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string | null>(null);
+    interface MoveData {
+        fen: string;
+        move: string;
+        isPlayer: number;
+    }
+
+    const moveArrayRef = useRef<MoveData[]>([]);
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -38,8 +45,31 @@ export default function GameboardPage() {
             setGameId(crypto.randomUUID());
         }
 
+        const id = localStorage.getItem('user_id');
+        setUserId(id);
+
         setLoading(false);
     }, [gameId, router]);
+
+    const registerGame = async () => {
+        console.log("INICIANDO O REGISTRO NO BANCO")
+        for(const moveData of moveArrayRef.current) {
+            await fetch(`${API_URL}/register_move/?user_id=${userId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    move: `${moveData.move}`,
+                    isPlayer: moveData.isPlayer,
+                    fen: `${moveData.fen}`,
+                }),
+            });
+            console.log(`user id: ${userId}`);
+            console.log(moveData);
+        }
+        return;
+    }
 
     const getBoardWidth = () => {
         if (typeof window === 'undefined') return 800; // fallback pro SSR
@@ -80,7 +110,18 @@ export default function GameboardPage() {
         catch {
             result = undefined;
         }
-        console.log(`resultado: ${result}`);
+
+        if(result) {
+            // apenas loga a FEN após o movimento
+            try {
+                console.log('FEN após o movimento:', gameCopy.fen());
+                moveArrayRef.current.push({fen: `${gameCopy.fen()}`, isPlayer: 1, move: `${sourceSquare}${targetSquare}`});
+            } catch (e) {
+                console.log('Não foi possível obter a FEN do jogo:', e);
+            }
+        }
+
+        console.log(moveArrayRef);
 
         // if (!result) {
         //     setStatusMsg('Movimento inválido! Tente novamente.');
@@ -114,6 +155,11 @@ export default function GameboardPage() {
             if (data.message) {
                 setGameStatus(data.message);
             }
+            console.log(`data`, data)
+
+            if(data.status === 'fim') {
+                await registerGame();
+            }
 
             if (data.fen) {
                 const updatedGame = new Chess(data.fen);
@@ -134,6 +180,15 @@ export default function GameboardPage() {
             setStatusMsg('Erro na comunicação com o servidor.');
         }
 
+        // apenas loga a FEN após o movimento
+        try {
+            console.log('FEN após o movimento:', gameCopy.fen());
+            moveArrayRef.current.push({fen: `${gameCopy.fen()}`, isPlayer: 0, move: `${sourceSquare}${targetSquare}`});
+        } catch (e) {
+            console.log('Não foi possível obter a FEN do jogo:', e);
+        }
+
+        console.log(moveArrayRef);
         return true;
     };
 

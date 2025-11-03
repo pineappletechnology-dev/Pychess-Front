@@ -39,6 +39,14 @@ export default function Game() {
 
 
     useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            alert("Você está tentando sair da partida!");
+            event.preventDefault();
+            event.returnValue = ""; // necessário para o alerta nativo aparecer em alguns navegadores
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        
         const fetchData = async () => {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -70,6 +78,10 @@ export default function Game() {
             } finally {
                 setLoading(false);
             }
+
+            return () => {
+                window.removeEventListener("beforeunload", handleBeforeUnload);
+            };
         };
 
         fetchData();
