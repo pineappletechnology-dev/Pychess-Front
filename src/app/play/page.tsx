@@ -51,25 +51,64 @@ export default function GameboardPage() {
         setLoading(false);
     }, [gameId, router]);
 
-    const registerGame = async () => {
-        console.log("INICIANDO O REGISTRO NO BANCO")
-        for(const moveData of moveArrayRef.current) {
-            await fetch(`${API_URL}/register_move/?user_id=${userId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    move: `${moveData.move}`,
-                    isPlayer: moveData.isPlayer,
-                    fen: `${moveData.fen}`,
-                }),
-            });
-            console.log(`user id: ${userId}`);
-            console.log(moveData);
+
+    const finishGame = async (winner: 'player' | 'ai') => {
+        const res = await fetch(`${API_URL}/finish_game/?user_id=${userId}&winner=${winner}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (res.ok) {
+            console.log("✅ Partida encerrada com sucesso!");
+        } else {
+            const err = await res.text();
+            console.error("❌ Erro ao encerrar partida:", err);
         }
-        return;
-    }
+    };
+
+
+    const registerGame = async () => {
+        console.log("INICIANDO O REGISTRO NO BANCO");
+
+        if (!userId) {
+            console.error("❌ userId não encontrado. Abortando registro.");
+            return;
+        }
+
+        if (!moveArrayRef.current || moveArrayRef.current.length === 0) {
+            console.warn("⚠️ Nenhum movimento para registrar.");
+            return;
+        }
+
+        try {
+            for (const moveData of moveArrayRef.current) {
+                const res = await fetch(`${API_URL}/register_move/?user_id=${userId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        move: moveData.move,
+                        isPlayer: moveData.isPlayer,
+                        fen: moveData.fen,
+                    }),
+                });
+
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    console.error(`Erro ao registrar movimento: ${errorText}`);
+                } else {
+                    console.log(`✅ Movimento registrado:`, moveData);
+                }
+            }
+
+            console.log("✅ Todos os movimentos foram registrados com sucesso!");
+        } catch (err) {
+            console.error("❌ Erro geral ao registrar partida:", err);
+        }
+    };
+
 
     const getBoardWidth = () => {
         if (typeof window === 'undefined') return 800; // fallback pro SSR
@@ -159,6 +198,13 @@ export default function GameboardPage() {
 
             if(data.status === 'fim') {
                 await registerGame();
+
+                if(data.winner === 'player') {
+                    await finishGame('player');
+                } 
+                else if(data.winner === 'ai') {
+                    await finishGame('ai');
+                }
             }
 
             if (data.fen) {
@@ -318,7 +364,26 @@ export default function GameboardPage() {
                     }
                 />
             </div>
-            {/* <Footer iconName="icon-game.svg" text="Jogo" /> */}
+            {/* <button
+                onClick={async () => {
+
+                    try {
+                    // Chama a função que envia os movimentos
+                    await registerGame();
+
+                    // Simula um resultado — mude para "ai" se quiser testar outra condição
+                    const winner = "player";
+
+                    // Finaliza o jogo
+                    await finishGame(winner);
+                    } catch (err) {
+                    console.error("Erro durante o teste de registro/finalização:", err);
+                    }
+                }}
+                >
+                Testar Registro e Finalização
+            </button> */}
+
         </div>
     );
 }
