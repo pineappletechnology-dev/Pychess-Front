@@ -27,7 +27,7 @@ export default function GameDetails() {
                 const draws = data.total_games - (data.wins + data.losses);
                 const winRate = ((data.wins / data.total_games) * 100).toFixed(2);
                 const lossRate = ((data.losses / data.total_games) * 100).toFixed(2);
-                const rating = data.rating
+                const rating = data.rating;
 
                 setUserData({
                     ...data,
@@ -43,7 +43,7 @@ export default function GameDetails() {
                 console.error("Erro ao buscar dados do usuário:", error);
                 setLoading(false);
             });
-    });
+    }, []);
 
     if (loading || !userData) {
         return (
