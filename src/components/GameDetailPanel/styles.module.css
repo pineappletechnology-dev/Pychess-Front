@@ -2,11 +2,11 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    gap: 10px;
+    gap: 30px;
+    flex-direction: column;
 
     border-radius: 5px;
     padding: 20px;
-    background-color: #5288FF;
     color: white;
 }
 
@@ -15,6 +15,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #5288FF;
+    width: 100%;
+    padding: 20px;
+    border-radius: 5px;
 }
 
 .label {

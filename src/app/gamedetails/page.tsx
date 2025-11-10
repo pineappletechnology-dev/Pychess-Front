@@ -58,23 +58,19 @@ export default function GameDetails() {
             <div className={styles.content}>
                 <p>Informações do jogador</p>
                 <GameDetailPanel
-                    labels={['Número de partidas', 'Vitórias', 'Derrotas', 'Empates', 'Rating']}
+                    labels={['Número de partidas', 'Vitórias', 'Derrotas', 'Empates', 'Rating', 'Taxa de vitória', 'Taxa de derrota']}
                     values={[
                         userData.total_games.toString(),
                         userData.wins.toString(),
                         userData.losses.toString(),
                         userData.draws.toString(),
-                        userData.rating.toString()
+                        userData.rating.toString(),
+                        userData.winRate.toString(),
+                        userData.lossRate.toString()
                     ]}
                     maxWidth='90%'
                     minWidth='90%'
                 />
-
-                <p>Outros dados</p>
-                <div className={styles.gameData}>
-                    <GameDetailPanel labels={['Taxa de vitória']} values={[userData.winRate]} maxWidth='30%' minWidth='30%' />
-                    <GameDetailPanel labels={['Taxa de derrota']} values={[userData.lossRate]} maxWidth='30%' minWidth='30%' />
-                </div>
             </div>
             <Footer iconName='person.svg' text='Perfil' />
         </div>
