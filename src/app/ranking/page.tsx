@@ -5,7 +5,6 @@ import styles from './styles.module.css'
 import Footer from '@/components/Footer/Footer'
 import RankItem from '@/components/RankItem/RankItem'
 import Image from 'next/image'
-
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -20,19 +19,30 @@ export default function Ranking() {
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState<User[]>([]);
 
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-        router.push('/');
-    }
-
     useEffect(() => {
-        fetch(`${API_URL}/get-users/`)
-            .then(res => res.json())
-            .then(data => setUsers(data))
-            .catch(err => console.error('Erro ao buscar usuários:', err))
-            .finally(() => setLoading(false));
-    });
+        const token = localStorage.getItem('token');
+
+        // ✅ se não houver token, redireciona e interrompe o restante
+        if (!token) {
+            router.push('/');
+            return;
+        }
+
+        // ✅ busca apenas uma vez
+        const fetchUsers = async () => {
+            try {
+                const res = await fetch(`${API_URL}/get-users/`);
+                const data = await res.json();
+                setUsers(data);
+            } catch (err) {
+                console.error('Erro ao buscar usuários:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUsers();
+    }, [API_URL, router]); // ✅ dependências corretas
 
     if (loading) {
         return (
@@ -77,7 +87,7 @@ export default function Ranking() {
                 </div>
 
             </div>
-            <Footer iconName='crown.svg' text='Ranking'></Footer>
+            <Footer iconName='crown.svg' text='Ranking' />
         </div>
-    )
+    );
 }
