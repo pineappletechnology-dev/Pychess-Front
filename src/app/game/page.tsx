@@ -95,13 +95,16 @@ export default function Game() {
         );
     }
 
-    const handleClick = async (caminho: string) => {
+    const startGame = async () => {
         await fetch(`${API_URL}/start_game/?user_id=${userId}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
         });
+        router.push(`/play`);
+    };
+    const handleClick = async (caminho: string) => {
         router.push(`/${caminho}`);
     };
 
@@ -134,7 +137,7 @@ export default function Game() {
                 {/* <GameButton hasOngoingGame={hasOngoingGame} /> */}
                 <button
                     className='bg-gradient-to-r cursor-pointer hover:bg-green-300 transition-all flex items-center gap-2 justify-center py-4 from-green-600 to-green-500 w-full text-white text-lg p-2 rounded-lg'
-                    onClick={() => handleClick('play')}>
+                    onClick={() => startGame()}>
                     <Play />
                     <span className='font-medium'>Iniciar nova partida virtual</span>
                 </button>
@@ -166,7 +169,7 @@ export default function Game() {
                     <p className='text-lg font-bold'>Menu rápido</p>
                     <div className='pt-4 flex gap-4 justify-between'>
                         <InfoButton icon={<Trophy size={32} className='text-orange-500' />} title="Histórico Geral" text="Ver partidas anteriores" onClick={() => handleClick('history')}></InfoButton>
-                        <InfoButton icon={<Info size={32} className='text-blue-500' />} title="Estatísticas" text="Veja as suas estatísticas"></InfoButton>
+                        <InfoButton icon={<Info size={32} className='text-blue-500' />} title="Estatísticas" text="Veja as suas estatísticas" onClick={() => handleClick('gamedetails')}></InfoButton>
                         <InfoButton icon={<Crown size={32} className='text-purple-500' />} title="Ranking" text="Ver o ranking dos jogadores" onClick={() => handleClick('ranking')}></InfoButton>
                     </div>
                 </div>
