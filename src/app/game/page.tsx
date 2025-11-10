@@ -95,7 +95,13 @@ export default function Game() {
         );
     }
 
-    const handleClick = (caminho: string) => {
+    const handleClick = async (caminho: string) => {
+        await fetch(`${API_URL}/start_game/?user_id=${userId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
         router.push(`/${caminho}`);
     };
 
@@ -160,7 +166,7 @@ export default function Game() {
                     <p className='text-lg font-bold'>Menu rápido</p>
                     <div className='pt-4 flex gap-4 justify-between'>
                         <InfoButton icon={<Trophy size={32} className='text-orange-500' />} title="Histórico Geral" text="Ver partidas anteriores" onClick={() => handleClick('history')}></InfoButton>
-                        <InfoButton icon={<Info size={32} className='text-blue-500' />} title="Sobre" text="Conheça sobre a plataforma"></InfoButton>
+                        <InfoButton icon={<Info size={32} className='text-blue-500' />} title="Estatísticas" text="Veja as suas estatísticas"></InfoButton>
                         <InfoButton icon={<Crown size={32} className='text-purple-500' />} title="Ranking" text="Ver o ranking dos jogadores" onClick={() => handleClick('ranking')}></InfoButton>
                     </div>
                 </div>

@@ -12,37 +12,52 @@ interface Game {
     username: string;
     id: number;
     result: string;
-    duration: string
+    duration: string;
 }
 
 export default function History() {
     const router = useRouter();
     const [games, setGames] = useState<Game[]>([]);
     const [loading, setLoading] = useState(true);
+    const [userId, setUserId] = useState<string | null>(null);
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
+        const id = localStorage.getItem('user_id');
+        if (id) {
+            setUserId(id);
+            console.log('User ID encontrado:', id);
+        } else {
+            console.warn('Nenhum user_id encontrado. Redirecionando...');
+            router.push('/login'); // opcional
+        }
+    }, [router]);
+
+    useEffect(() => {
+        if (!userId) return;
+
         const token = localStorage.getItem('token');
 
-        fetch(`${API_URL}/user-history/`, {
+        fetch(`${API_URL}/user-history/?user_id=${userId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         })
             .then(res => res.json())
             .then(data => {
+                console.log('Histórico recebido:', data);
                 setGames(data);
             })
             .catch(err => {
-                console.error("Erro ao buscar histórico:", err);
+                console.error('Erro ao buscar histórico:', err);
             })
             .finally(() => setLoading(false));
-    }, []);
+    }, [userId]);
 
     const handleClick = (id: number) => {
         router.push(`/gamehistory/${id}`);
-    }
+    };
 
     if (loading) {
         return (
