@@ -171,8 +171,8 @@ export default function Game() {
                     </div>
                 </div>
                 <div className='pt-8'>
-                    <p className='text-lg font-bold'>Últimos movimentos</p>
-                    <GamePreview hasOngoingGame={hasOngoingGame} />
+                    {/* <p className='text-lg font-bold'>Últimos movimentos</p>
+                    <GamePreview hasOngoingGame={hasOngoingGame} /> */}
                 </div>
             </div>
         </div>
