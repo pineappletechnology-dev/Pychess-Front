@@ -58,7 +58,7 @@ export default function GameDetails() {
             <div className={styles.content}>
                 <p>Informações do jogador</p>
                 <GameDetailPanel
-                    labels={['Número de partidas', 'Vitórias', 'Derrotas', 'Empates', 'Rating', 'Taxa de vitória', 'Taxa de derrota']}
+                    labels={['Número de partidas', 'Vitórias', 'Derrotas', 'Empates', 'Rating', 'Taxa de vitória', 'Taxa de derrota', 'tempo médio de jogo']}
                     values={[
                         userData.total_games.toString(),
                         userData.wins.toString(),
@@ -66,7 +66,8 @@ export default function GameDetails() {
                         userData.draws.toString(),
                         userData.rating.toString(),
                         userData.winRate.toString(),
-                        userData.lossRate.toString()
+                        userData.lossRate.toString(),
+                        `${userData.averageGameTime.toString()} minutos`
                     ]}
                     maxWidth='90%'
                     minWidth='90%'

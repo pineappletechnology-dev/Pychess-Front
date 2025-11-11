@@ -68,46 +68,24 @@ export default function GameboardPage() {
     };
 
 
-    const registerGame = async () => {
-        console.log("INICIANDO O REGISTRO NO BANCO");
-
-        if (!userId) {
-            console.error("❌ userId não encontrado. Abortando registro.");
-            return;
-        }
-
-        if (!moveArrayRef.current || moveArrayRef.current.length === 0) {
-            console.warn("⚠️ Nenhum movimento para registrar.");
-            return;
-        }
+    const registerGame = async (status: string) => {
+        console.log("Enviando jogo para o banco...");
 
         try {
-            for (const moveData of moveArrayRef.current) {
-                const res = await fetch(`${API_URL}/register_move/?user_id=${userId}`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        move: moveData.move,
-                        isPlayer: moveData.isPlayer,
-                        fen: moveData.fen,
-                    }),
-                });
+            const response = await fetch(`${API_URL}/register_move/?user_id=${userId}&winner=${status}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(moveArrayRef.current),
+            });
 
-                if (!res.ok) {
-                    const errorText = await res.text();
-                    console.error(`Erro ao registrar movimento: ${errorText}`);
-                } else {
-                    console.log(`✅ Movimento registrado:`, moveData);
-                }
-            }
 
-            console.log("✅ Todos os movimentos foram registrados com sucesso!");
-        } catch (err) {
-            console.error("❌ Erro geral ao registrar partida:", err);
+            const result = await response.json();
+            console.log("Jogo registrado:", result);
+        } catch (error) {
+            console.error("Erro ao registrar o jogo:", error);
         }
     };
+
 
 
     const getBoardWidth = () => {
@@ -364,25 +342,17 @@ export default function GameboardPage() {
                     }
                 />
             </div>
-            {/* <button
-                onClick={async () => {
+            <button
+                onClick={() => registerGame("PLAYER")}
+            >
+            Testar Registro de Vitória do Player
+            </button>
 
-                    try {
-                    // Chama a função que envia os movimentos
-                    await registerGame();
-
-                    // Simula um resultado — mude para "ai" se quiser testar outra condição
-                    const winner = "player";
-
-                    // Finaliza o jogo
-                    await finishGame(winner);
-                    } catch (err) {
-                    console.error("Erro durante o teste de registro/finalização:", err);
-                    }
-                }}
-                >
-                Testar Registro e Finalização
-            </button> */}
+            <button
+                onClick={() => registerGame("AI")}
+            >
+            Testar Registro de Vitória da IA
+            </button>
 
         </div>
     );
