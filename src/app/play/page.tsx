@@ -52,24 +52,9 @@ export default function GameboardPage() {
     }, [gameId, router]);
 
 
-    const finishGame = async (winner: 'player' | 'ai') => {
-        const res = await fetch(`${API_URL}/finish_game/?user_id=${userId}&winner=${winner}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        if (res.ok) {
-            console.log("✅ Partida encerrada com sucesso!");
-        } else {
-            const err = await res.text();
-            console.error("❌ Erro ao encerrar partida:", err);
-        }
-    };
-
-
     const registerGame = async (status: string) => {
         console.log("Enviando jogo para o banco...");
+        console.log(moveArrayRef)
 
         try {
             const response = await fetch(`${API_URL}/register_move/?user_id=${userId}&winner=${status}`, {
@@ -119,32 +104,28 @@ export default function GameboardPage() {
         };
 
         const gameCopy = new Chess(game.fen());
-        console.log(move);
         let result = undefined;
+
         try {
             result = gameCopy.move(move);
-        }
-        catch {
+        } catch {
             result = undefined;
         }
 
-        if(result) {
-            // apenas loga a FEN após o movimento
+        if (result) {
             try {
-                console.log('FEN após o movimento:', gameCopy.fen());
-                moveArrayRef.current.push({fen: `${gameCopy.fen()}`, isPlayer: 1, move: `${sourceSquare}${targetSquare}`});
+                console.log('FEN após movimento PLAYER:', gameCopy.fen());
+                moveArrayRef.current.push({
+                    fen: gameCopy.fen(),
+                    isPlayer: 1,
+                    move: `${sourceSquare}${targetSquare}`,
+                });
             } catch (e) {
                 console.log('Não foi possível obter a FEN do jogo:', e);
             }
         }
 
-        console.log(moveArrayRef);
-
-        // if (!result) {
-        //     setStatusMsg('Movimento inválido! Tente novamente.');
-        //     return false;
-        // }
-
+        // Atualiza UI
         setGame(gameCopy);
         setFen(gameCopy.fen());
         setStatusMsg(null);
@@ -152,6 +133,7 @@ export default function GameboardPage() {
         setStockfishMove(null);
         setGameStatus(null);
 
+        // Envia jogada ao servidor
         try {
             const response = await fetch(`${API_URL}/play_autonomous_game/?game_id=${gameId}`, {
                 method: 'POST',
@@ -172,16 +154,12 @@ export default function GameboardPage() {
             if (data.message) {
                 setGameStatus(data.message);
             }
-            console.log(`data`, data)
 
-            if(data.status === 'fim') {
-                await registerGame();
-
-                if(data.winner === 'player') {
-                    await finishGame('player');
-                } 
-                else if(data.winner === 'ai') {
-                    await finishGame('ai');
+            if (data.status === 'fim') {
+                if (data.winner === 'player') {
+                    await registerGame('PLAYER');
+                } else if (data.winner === 'ai') {
+                    await registerGame('AI');
                 }
             }
 
@@ -191,30 +169,32 @@ export default function GameboardPage() {
                 setFen(data.fen);
             }
 
-            if (data.stockfish_move) {
-                setStockfishMove({
-                    from: data.stockfish_move.slice(0, 2),
-                    to: data.stockfish_move.slice(2, 4),
+            // 🌟 SALVAR MOVIMENTO DA IA — SOMENTE SE ELA JOGOU
+            if (data.stockfish_move && data.fen) {
+                const aiFrom = data.stockfish_move.slice(0, 2);
+                const aiTo   = data.stockfish_move.slice(2, 4);
+
+                console.log('FEN após movimento AI:', data.fen);
+
+                moveArrayRef.current.push({
+                    fen: data.fen,
+                    isPlayer: 0,
+                    move: `${aiFrom}${aiTo}`,
                 });
+
+                setStockfishMove({ from: aiFrom, to: aiTo });
             } else {
                 setStockfishMove(null);
             }
+
         } catch (error) {
             console.error('Erro ao enviar jogada:', error);
             setStatusMsg('Erro na comunicação com o servidor.');
         }
 
-        // apenas loga a FEN após o movimento
-        try {
-            console.log('FEN após o movimento:', gameCopy.fen());
-            moveArrayRef.current.push({fen: `${gameCopy.fen()}`, isPlayer: 0, move: `${sourceSquare}${targetSquare}`});
-        } catch (e) {
-            console.log('Não foi possível obter a FEN do jogo:', e);
-        }
-
-        console.log(moveArrayRef);
         return true;
     };
+
 
     if (loading) {
         return (
@@ -342,7 +322,7 @@ export default function GameboardPage() {
                     }
                 />
             </div>
-            {/* <button
+            <button
                 onClick={() => registerGame("PLAYER")}
             >
             Testar Registro de Vitória do Player
@@ -352,7 +332,7 @@ export default function GameboardPage() {
                 onClick={() => registerGame("AI")}
             >
             Testar Registro de Vitória da IA
-            </button> */}
+            </button>
 
         </div>
     );
