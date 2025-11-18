@@ -133,7 +133,7 @@ export default function Game() {
                 </div>
             )}
 
-            <div className="container mx-auto px-72 my-10 pb-20">
+            <div className="container mx-auto px-2 my-10 pb-20">
                 {/* <GameButton hasOngoingGame={hasOngoingGame} /> */}
                 <button
                     className='bg-gradient-to-r cursor-pointer hover:bg-green-300 transition-all flex items-center gap-2 justify-center py-4 from-green-600 to-green-500 w-full text-white text-lg p-2 rounded-lg'

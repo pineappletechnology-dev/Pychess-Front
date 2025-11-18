@@ -11,7 +11,7 @@ export default function InfoButton({ icon, title, text, onClick }: InfoButtonPro
             {icon}
             <div className="flex justify-center items-center flex-col mt-2">
                 <p className="font-medium">{title}</p>
-                <p className="text-sm">{text}</p>
+                <p className="text-sm ib-description">{text}</p>
             </div>
         </div>
     )

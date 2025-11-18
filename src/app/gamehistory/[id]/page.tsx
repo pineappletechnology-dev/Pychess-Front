@@ -102,7 +102,7 @@ export default function HistoryPage() {
                     </span>
                 ))}
             </div>
-            <Footer iconName="icon-game.svg" text="Jogo"></Footer>
+            {/* <Footer iconName="icon-game.svg" text="Jogo"></Footer> */}
         </div>
     );
 }

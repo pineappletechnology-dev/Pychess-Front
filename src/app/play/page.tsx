@@ -342,7 +342,7 @@ export default function GameboardPage() {
                     }
                 />
             </div>
-            <button
+            {/* <button
                 onClick={() => registerGame("PLAYER")}
             >
             Testar Registro de Vitória do Player
@@ -352,7 +352,7 @@ export default function GameboardPage() {
                 onClick={() => registerGame("AI")}
             >
             Testar Registro de Vitória da IA
-            </button>
+            </button> */}
 
         </div>
     );
