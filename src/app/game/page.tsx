@@ -7,7 +7,6 @@ import '../../styles/globals.css'
 import styles from './styles.module.css'
 import GameInfoCard from "@/components/GameInfoCard/GameInfoCard";
 import InfoButton from "@/components/InfoButton/InfoButton";
-import GamePreview from '@/components/GamePreview/GamePreview';
 import { Crown, Info, Play, Trophy } from 'lucide-react';
 
 type LastGame = {
@@ -20,12 +19,10 @@ type LastGame = {
 export default function Game() {
 
     const router = useRouter();
-    const [hasOngoingGame, setHasOngoingGame] = useState(false);
     const [loading, setLoading] = useState(true);
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const [lastGame, setLastGame] = useState<LastGame | null>(null);
     const [roboConectado, setRoboConectado] = useState(false);
-    const [isVirtual, setisVirtual] = useState(true);
     const [userId, setUserId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -33,20 +30,14 @@ export default function Game() {
         setUserId(id);
     }, []);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setisVirtual(event.target.checked);
-    };
+    // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setisVirtual(event.target.checked);
+    // };
 
 
     useEffect(() => {
-        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-            alert("Você está tentando sair da partida!");
-            event.preventDefault();
-            event.returnValue = ""; // necessário para o alerta nativo aparecer em alguns navegadores
-        };
+        if (!userId) return; // só roda quando o userId realmente existir
 
-        window.addEventListener("beforeunload", handleBeforeUnload);
-        
         const fetchData = async () => {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -56,10 +47,10 @@ export default function Game() {
 
             try {
 
-                const gameBoardRes = await fetch(`${API_URL}/game_board/`);
-                if (gameBoardRes.ok) {
-                    setHasOngoingGame(true);
-                }
+                // const gameBoardRes = await fetch(`${API_URL}/game_board/`);
+                // if (gameBoardRes.ok) {
+                //     setHasOngoingGame(true);
+                // }
 
                 const lastGameRes = await fetch(`${API_URL}/last_game/?user_id=${userId}`);
                 if (lastGameRes.ok) {
@@ -78,14 +69,13 @@ export default function Game() {
             } finally {
                 setLoading(false);
             }
-
-            return () => {
-                window.removeEventListener("beforeunload", handleBeforeUnload);
-            };
         };
 
         fetchData();
-    }, []);
+
+
+    }, [userId]); // agora depende do userId
+
 
     if (loading) {
         return (
@@ -114,7 +104,7 @@ export default function Game() {
     };
 
     return (
-        <div className='flex'>
+        <div className='flex main-screen'>
             {roboConectado && (
                 <div style={{
                     position: 'absolute',
@@ -140,15 +130,7 @@ export default function Game() {
                     onClick={() => startGame()}>
                     <Play />
                     <span className='font-medium'>Iniciar nova partida virtual</span>
-                </button>
-                <div className='w-full flex justify-center p-4'>
-                    <label className="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" value="" className="sr-only peer"/>
-                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-                        <span className="ms-3 text-sm font-medium">Partida virtual</span>
-                    </label>
-                </div>
-                
+                </button>                
                 <div className='pt-8'>
                     <p className='text-lg font-bold'>Última partida</p>
                     {lastGame ? (

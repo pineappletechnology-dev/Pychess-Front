@@ -84,9 +84,9 @@ export default function GameboardPage() {
         return 800;                                
     };
 
-    const toggleTheme = () => setBoardTheme(prev => (prev === 'light' ? 'dark' : 'light'));
-    const toggleOrientation = () => setOrientation(prev => (prev === 'white' ? 'black' : 'white'));
-    const toggleCoordinates = () => setShowCoordinates(prev => !prev);
+    // const toggleTheme = () => setBoardTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+    // const toggleOrientation = () => setOrientation(prev => (prev === 'white' ? 'black' : 'white'));
+    // const toggleCoordinates = () => setShowCoordinates(prev => !prev);
 
     // Cores para os temas
     const lightThemeLightSquare = '#f0d9b5';
@@ -206,49 +206,16 @@ export default function GameboardPage() {
 
     return (
         <div className={styles.container}
+        
         style={
             { height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }
         } >
-            {/* <button
-                onClick={() => setShowSettings(prev => !prev)}
-                className={styles.button}
-                style={{ marginBottom: '1rem' }}
+            <button
+                onClick={() => router.push('/game')}
+                className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md shadow transition"
             >
-                {showSettings ? 'Ocultar Configurações ▲' : 'Mostrar Configurações ▼'}
-            </button> */}
-
-            {showSettings && (
-                <div className={styles.settingsContainer}>
-                    <h3 className={styles.settingsTitle}>⚙️ Configurações do Tabuleiro</h3>
-
-                    <button onClick={toggleTheme} className={styles.button}>
-                        Tema: {boardTheme === 'light' ? 'Claro' : 'Escuro'}
-                    </button>
-
-                    <button onClick={toggleOrientation} className={styles.button}>
-                        Orientação: {orientation === 'white' ? 'Branco' : 'Preto'}
-                    </button>
-
-                    <button onClick={toggleCoordinates} className={styles.button}>
-                        Coordenadas: {showCoordinates ? 'Ativadas' : 'Ocultas'}
-                    </button>
-
-                    <div style={{ marginTop: '10px' }}>
-                        <label>
-                            <strong>Tamanho:</strong>
-                        </label>
-                        <select
-                            value={boardSize}
-                            onChange={e => setBoardSize(e.target.value as 'small' | 'medium' | 'large')}
-                            className={styles.select}
-                        >
-                            <option value="small">Pequeno</option>
-                            <option value="medium">Médio</option>
-                            <option value="large">Grande</option>
-                        </select>
-                    </div>
-                </div>
-            )}
+                Voltar para o menu
+            </button>
 
             {gameStatus && (
                 <div
@@ -322,17 +289,26 @@ export default function GameboardPage() {
                     }
                 />
             </div>
-            <button
-                onClick={() => registerGame("PLAYER")}
-            >
-            Testar Registro de Vitória do Player
-            </button>
+            <div className="flex flex-col gap-4 mt-4">
 
-            <button
-                onClick={() => registerGame("AI")}
-            >
-            Testar Registro de Vitória da IA
-            </button>
+                <button
+                    onClick={() => registerGame("PLAYER")}
+                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md shadow transition"
+                >
+                    Testar Registro de Vitória do Player
+                </button>
+
+                <button
+                    onClick={() => registerGame("AI")}
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md shadow transition"
+                >
+                    Testar Registro de Vitória da IA
+                </button>
+
+                
+            </div>
+
+
 
         </div>
     );
